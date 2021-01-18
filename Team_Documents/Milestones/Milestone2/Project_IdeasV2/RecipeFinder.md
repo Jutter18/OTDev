@@ -14,3 +14,8 @@ This idea is worth doing because it is exciting for anyone who sits there starin
 5. Be able to manually decrement recipe ingredients
 6. Auto generate a menu for the week with ingredients that need to be picked up or are already in the inventory
 7. Generate a shopping list with all ingredients for upcoming meals. 
+
+
+
+## 6. Rate the topic with a difficulty rating of 1-10. One being supremely easy to implement (not necessarily short though). Ten would require the best CS students using lots of what they learned in their CS degree, plus additional independent learning, to complete successfully.
+For difficulty the project would be rated around a 7 to 8 with room to add more complex features as the project becomes more fleshed out. It would utilize everything learned in the class so far, as well as meeting the requirements of the project. Requiring external API calls, a robust database, and a functional, user-friendly front-end.
