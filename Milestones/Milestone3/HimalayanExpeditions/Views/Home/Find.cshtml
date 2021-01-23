@@ -1,22 +1,23 @@
 @model Search
-<body style="background-color: aliceblue;">
-    @{
+@{
     ViewData["Title"] = "Find an expedition";
-    }
-    <h1> <center> Search </center> </h1>
+}
+<h2 class="text-center">Search</h2>
 
-    <form asp-controller="Home" asp-action="Find" method=get>
-        <div>
-            <label> Search  </label>
-            <input asp-for="Year" required>  </input>
-            <button type="submit"> Search </button>
+<form asp-controller="Home" asp-action="Find" method=get>
+    <div class="input-group">
+        <label class="bg-primary"> Year:   </label>
+        <input asp-for="Year" placeholder="1999" class="form-control" required min="1920" max="2019" />
+        <div class="input-group-append">
+            <button class="btn btn-success" type="submit"> Search </button>
         </div>
-    </form>
+    </div>
+</form>
 
-    @if(Model != null)
+@if (Model != null)
 {
-    <div class="text-center p-2">
-        <table class="table table-bordered table-striped table-sm">
+    <div class="text-center p-2 card">
+        <table class="table table-bordered table-striped table-sm table-dark">
             <thead>
                 <tr>
                     <th>
@@ -34,16 +35,16 @@
 
             </thead>
             <tbody>
-                @foreach (var item in Model.ExpeditionList){
-                <tr>
-                    <td> @item.Year </td>
-                    <td> @item.Peak.Name </td>
-                    <td> @item.StartDate </td>
-                    <td> @item.TerminationReason </td>
-                </tr>
-                 }
+                @foreach (var item in Model.ExpeditionList)
+                {
+                    <tr>
+                        <td> @item.Year </td>
+                        <td> @item.Peak.Name </td>
+                        <td> @item.StartDate </td>
+                        <td> @item.TerminationReason </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 }
-</body>

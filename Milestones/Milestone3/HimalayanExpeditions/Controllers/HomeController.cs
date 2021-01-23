@@ -24,7 +24,23 @@ namespace HimalayanExpeditions.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var articles = CreateArticle(_context.Expeditions.Include(p => p.Peak).ToList());
+            return View("Index", articles);
+        }
+
+        private IEnumerable<string> CreateArticle(List<Expedition> expeditions)
+        {
+            var articles = new List<string>();
+            expeditions.Reverse();
+            foreach (var exp in expeditions)
+            {
+                var oxygen = (bool)exp.OxygenUsed ? "used oxygen" : "did not use oxygen";
+                var succes = exp.TerminationReason.Contains("Success") ? "The expedition was a success!" : "The expedition failed because of " + exp.TerminationReason.ToLower();
+                var article = $"In the {exp.Season} of {exp.StartDate.Value.Year}, a team " + $"of expeditioners embarked on their journey to summit {exp.Peak.Name}."
+                  + $"During this adventure, the expeditioners {oxygen}. {succes}";
+                articles.Add(article);
+            }
+            return articles;
         }
 
         public IActionResult Privacy()
@@ -32,7 +48,8 @@ namespace HimalayanExpeditions.Controllers
             return View();
         }
 
-        public IActionResult Find(){
+        public IActionResult Find()
+        {
             return View();
         }
         [HttpGet]

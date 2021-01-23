@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<string>;
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -13,11 +14,23 @@
             </div>
         </div>
     </div>
-    <div class="col shadow-lg">
+    <div class="col shadow-lg testimonial-group" id="scroll">
         <div class="card shadow-lg">
             <h2 class="text-center">Climbing in the Himalayas</h2>
-            <p class="text-center" id="stats">@*Put stats from AJAX question here*@</p>
+            <h5 class="card-title"><strong>Current Articles</strong></h5>
         </div>
+        <table class="table-striped table-responsive">
+            @foreach (var exp in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="card col-sm">
+                            <p class="card-text">@exp</p>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
 
     </div>
 </div>
