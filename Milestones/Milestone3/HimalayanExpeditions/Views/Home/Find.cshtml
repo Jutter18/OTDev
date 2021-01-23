@@ -1,0 +1,49 @@
+@model Search
+<body style="background-color: aliceblue;">
+    @{
+    ViewData["Title"] = "Find an expedition";
+    }
+    <h1> <center> Search </center> </h1>
+
+    <form asp-controller="Home" asp-action="Find" method=get>
+        <div>
+            <label> Search  </label>
+            <input asp-for="Year" required>  </input>
+            <button type="submit"> Search </button>
+        </div>
+    </form>
+
+    @if(Model != null)
+{
+    <div class="text-center p-2">
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        Year
+                    </th>
+                    <th>
+                        Peak
+                    </th>
+                    <th>
+                        Start Date
+                    </th>
+                    <th>
+                        Success / Failure
+                    </th>
+
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ExpeditionList){
+                <tr>
+                    <td> @item.Year </td>
+                    <td> @item.Peak.Name </td>
+                    <td> @item.StartDate </td>
+                    <td> @item.TerminationReason </td>
+                </tr>
+                 }
+            </tbody>
+        </table>
+    </div>
+}
+</body>
