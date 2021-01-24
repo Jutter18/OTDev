@@ -6,7 +6,7 @@
 @model Search
 
 <h1> <center>Unclimbed Peaks</center></h1>
-<div style="border: 1px solid black; padding:5px; margin-right:75%">
+<div style="border: 1px solid black; padding:5px; margin-right:75%; background-color:whitesmoke" >
     <p>Search Again</p>
     <form asp-controller="Home" asp-action="FindPeaks" method=get>
         <div>
@@ -21,10 +21,11 @@
             <button type="submit"> Search </button>
         </div>
     </form>
+    <p>@Model.Count Results Returned</p>
 </div>
-<p>@Model.Count Results Returned</p>
+
 <div class="text-center p-2">
-    <table class="table table-bordered table-striped table-sm">
+    <table class="table table-bordered table-striped table-sm table-dark">
         <thead>
             <tr>
                 <th>
@@ -38,8 +39,8 @@
         <tbody>
             @foreach (var item in Model.ExpeditionList)
             {
-            <tr>
-                <td> @item.Peak.Name </td>
-                <td> @item.Season </td>
-            </tr>
+                <tr>
+                    <td> @item.Peak.Name </td>
+                    <td> @item.Season </td>
+                </tr>
             }
