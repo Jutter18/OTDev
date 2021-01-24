@@ -17,5 +17,6 @@ namespace HimalayanExpeditions.Models
         public string Peak { get; set; }
         public string Season { get; set; }
         public IEnumerable<Expedition> ExpeditionList { get; set; }
+        public bool Climbed { get; internal set; }
     }
 }

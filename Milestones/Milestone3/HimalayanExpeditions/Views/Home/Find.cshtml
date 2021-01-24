@@ -1,25 +1,25 @@
 @model Search
 <body style="background-color: aliceblue;">
     @{ ViewData["Title"] = "Find an expedition"; }
-    <h1> <center> Search </center> </h1>
+    <h1>Search</h1>
 
     <div style="border: 1px solid black; padding:5px; margin-right:75%; background-color:whitesmoke">
-        <p>Looking for a Challenge? </br> Find Expeditions that have never been completed:</p>
+        <p>Looking for a Challenge? <br /> Find Expeditions that have never been completed:</p>
         <form asp-controller="Home" asp-action="FindPeaks" method=get>
             <div>
                 <label> Season  </label>
                 <select asp-for="Season">
-                    <option value="Any"> Any</option>
-                    <option value="Winter"> Winter</option>
+                    <option value="Any">Any</option>
+                    <option value="Winter">Winter</option>
                     <option value="Spring">Spring</option>
-                    <option value="Summer"> Summer</option>
-                    <option value="Autumn"> Autumn</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Autumn">Autumn</option>
                 </select>
-                <button type="submit"> Search </button>
+                <button type="submit">Search</button>
             </div>
         </form>
     </div>
-    </br>
+    <br />
     <p>Search Expeditions</p>
     <div style="border: 1px solid black; padding:5px; margin-right:35%; background-color:whitesmoke">
         <form asp-controller="Home" asp-action="Find" method=get>
