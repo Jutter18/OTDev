@@ -1,49 +1,76 @@
 @model Search
 <body style="background-color: aliceblue;">
-    @{
-    ViewData["Title"] = "Find an expedition";
-    }
+    @{ ViewData["Title"] = "Find an expedition"; }
     <h1> <center> Search </center> </h1>
 
+    <div style="border: 1px solid black; padding:5px; margin-right:75%">
+        <p>Looking for a Challenge? </br> Find Expeditions that have never been completed:</p>
+        <form asp-controller="Home" asp-action="FindPeaks" method=get>
+            <div>
+                <label> Season  </label>
+                <select asp-for="Season">
+                    <option value="Any"> Any</option>
+                    <option value="Winter"> Winter</option>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer"> Summer</option>
+                    <option value="Autumn"> Autumn</option>
+                </select>
+                <button type="submit"> Search </button>
+            </div>
+        </form>
+    </div>
+    </br>
+    <p>Search Expeditions</p>
     <form asp-controller="Home" asp-action="Find" method=get>
         <div>
-            <label> Search  </label>
+            <label> Year  </label>
             <input asp-for="Year" required>  </input>
+            <label> Peak  </label>
+            <input asp-for="Peak">  </input>
+            <label> Season  </label>
+            <select asp-for="Season">
+                <option value="Any"> Any</option>
+                <option value="Winter"> Winter</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer"> Summer</option>
+                <option value="Autumn"> Autumn</option>
+            </select>
             <button type="submit"> Search </button>
         </div>
     </form>
+    <p>@Model.Count Results Returned</p>
 
-    @if(Model != null)
-{
-    <div class="text-center p-2">
-        <table class="table table-bordered table-striped table-sm">
-            <thead>
-                <tr>
-                    <th>
-                        Year
-                    </th>
-                    <th>
-                        Peak
-                    </th>
-                    <th>
-                        Start Date
-                    </th>
-                    <th>
-                        Success / Failure
-                    </th>
+    @if (Model != null)
+    {
+<div class="text-center p-2">
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th>
+                    Year
+                </th>
+                <th>
+                    Peak
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    Success / Failure
+                </th>
 
-            </thead>
-            <tbody>
-                @foreach (var item in Model.ExpeditionList){
-                <tr>
-                    <td> @item.Year </td>
-                    <td> @item.Peak.Name </td>
-                    <td> @item.StartDate </td>
-                    <td> @item.TerminationReason </td>
-                </tr>
-                 }
-            </tbody>
-        </table>
-    </div>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ExpeditionList)
+            {
+<tr>
+    <td> @item.Year </td>
+    <td> @item.Peak.Name </td>
+    <td> @item.StartDate </td>
+    <td> @item.TerminationReason </td>
+</tr>
 }
+        </tbody>
+    </table>
+</div>}
 </body>
