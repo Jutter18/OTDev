@@ -72,8 +72,11 @@ namespace HimalayanExpeditions.Controllers
         {
             if (ModelState.IsValid)
             {
-                var temp = search.Year;
-                var expeditionList = _context.Expeditions.Where(c => c.Year == temp).Include(p => p.Peak).ToList();
+                var expeditionList = _context.Expeditions.Include(p => p.Peak).ToList();
+                if (search.Year != null)
+                {
+                    expeditionList = expeditionList.Where(c => c.Year == search.Year).ToList();
+                }
                 if (search.Peak != null)
                 {
                     expeditionList = expeditionList.Where(p => p.Peak.Name.Contains(search.Peak)).ToList();
@@ -82,7 +85,11 @@ namespace HimalayanExpeditions.Controllers
                 {
                     expeditionList = expeditionList.Where(s => s.Season == search.Season).ToList();
                 }
-                search.ExpeditionList = expeditionList;
+                if (search.TerminationReason != "Any")
+                {
+                    expeditionList = expeditionList.Where(s => s.TerminationReason == search.TerminationReason).ToList();
+                }
+                search.ExpeditionList = expeditionList.OrderBy(s => s.StartDate);
                 search.Count = expeditionList.Count();
                 return View("Find", search);
             }
