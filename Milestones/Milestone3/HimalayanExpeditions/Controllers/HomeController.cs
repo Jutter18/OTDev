@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using cloudscribe.Pagination;
+using cloudscribe.Web;
+using cloudscribe.Pagination.Models;
 
 namespace HimalayanExpeditions.Controllers
 {
@@ -67,57 +70,104 @@ namespace HimalayanExpeditions.Controllers
         {
             return View();
         }
-        public IActionResult FindPeaks(Search search)
+        public async Task<IActionResult> FindPeaks(Search search, int pageNumber = 1)
         {
             if (ModelState.IsValid)
             {
-                var expeditionList = _context.Expeditions.Where(s => s.TerminationReason != "Success (main peak)").Include(p => p.Peak).ToList();
+                int pageSize = 20;
 
+                var offset = (pageSize * pageNumber) - pageSize;
+                IQueryable<Expedition> expeditionList = _context.Expeditions.Where(s => s.TerminationReason != "Success (main peak)").Include(p => p.Peak).OrderBy(p => p.Peak.Name)
+                    .Skip(offset)
+                    .Take(pageSize);
+                var count = await _context.Expeditions.Where(s => s.TerminationReason != "Success (main peak)")
+                    .Include(p => p.Peak)
+                    .CountAsync();
                 if (search.Season != "Any")
                 {
-                    expeditionList = expeditionList.Where(s => s.Season == search.Season).ToList();
+                    expeditionList = expeditionList.Where(s => s.Season == search.Season).Include(p => p.Peak).OrderBy(p => p.Peak.Name)
+                        .Skip(offset)
+                        .Take(pageSize);
+                    count = await _context.Expeditions.Where(s => s.TerminationReason != "Success (main peak)")
+                    .Include(p => p.Peak)
+                    .CountAsync();
                 }
-                expeditionList = expeditionList.GroupBy(s => s.Peak).Select(p => p.First()).ToList();
-                search.ExpeditionList = expeditionList;
-                search.Count = expeditionList.Count();
+                var result = new PagedResult<Expedition>
+                {
+                    Data = await expeditionList.ToListAsync(),
+                    TotalItems = count,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                search.ExpeditionList = result;
+
+                search.Count = count;
                 return View("FindPeaks", search);
             }
             else return View("FindPeaks", null);
         }
-        public IActionResult Find(){
+        public IActionResult Find()
+        {
             return View();
         }
         [HttpGet]
-        public IActionResult Find(Search search)
+        public async Task<IActionResult> Find(Search search, int? pageNumber)
         {
-            if (ModelState.IsValid)
+
+            int pageSize = 20;
+            var currentPageNum = pageNumber.HasValue ? pageNumber.Value : 1;
+            var offset = (pageSize * currentPageNum) - pageSize;
+            var expeditionList = _context.Expeditions
+                .Include(p => p.Peak);
+            var count = expeditionList.Count();
+            if (search.Year != null)
             {
-                var expeditionList = _context.Expeditions.Include(p => p.Peak).ToList();
-                if (search.Year != null)
-                {
-                    expeditionList = expeditionList.Where(c => c.Year == search.Year).ToList();
-                }
-                if (search.Peak != null)
-                {
-                    expeditionList = expeditionList.Where(p => p.Peak.Name.Contains(search.Peak)).ToList();
-                }
-                if (search.Season != "Any")
-                {
-                    expeditionList = expeditionList.Where(s => s.Season == search.Season).ToList();
-                }
-                if (search.TerminationReason != "Any")
-                {
-                    expeditionList = expeditionList.Where(s => s.TerminationReason == search.TerminationReason).ToList();
-                }
-                search.ExpeditionList = expeditionList.OrderBy(s => s.StartDate);
-                search.Count = expeditionList.Count();
-                return View("Find", search);
+                expeditionList = expeditionList.Where(c => c.Year == search.Year)
+                    .Include(p => p.Peak);
+                count = expeditionList.Count();
+
             }
-            else
+            if (search.Peak != null)
             {
-                return View("Find", null);
+                expeditionList = expeditionList.Where(p => p.Peak.Name.Contains(search.Peak)).Include(p => p.Peak);
+                count = expeditionList.Count();
+
             }
+            if (search.Season != "Any")
+            {
+                expeditionList = expeditionList.Where(s => s.Season == search.Season)
+                    .Include(p => p.Peak);
+                count = expeditionList.Count();
+
+            }
+            if (search.TerminationReason != "Any")
+            {
+                expeditionList = expeditionList.Where(s => s.TerminationReason == search.TerminationReason)
+                    .Include(p => p.Peak);
+                count = expeditionList.Count();
+
+            }
+
+            var data = await expeditionList
+                .Select(p => p)
+                .Skip(offset)
+                .Take(pageSize)
+                .OrderBy(p => p.Peak.Name)
+                .ToListAsync();
+
+            var result = new PagedResult<Expedition>
+            {
+                Data = data,
+                TotalItems = (count + pageSize - 1) / pageSize,
+                PageNumber = currentPageNum,
+                PageSize = pageSize
+            };
+            search.Count = count;
+            search.ExpeditionList = result;
+            return View("Find", search);
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
