@@ -27,6 +27,26 @@ namespace HimalayanExpeditions.Controllers
             var articles = CreateArticle(_context.Expeditions.Include(p => p.Peak).ToList());
             return View("Index", articles);
         }
+        public IActionResult AddExpeditionSubmit(ExpeditionAdder data)
+        {
+            if(ModelState.IsValid)
+            {
+                data.Expedition.OxygenUsed = data.OxyCheck;
+                data.Expedition.TrekkingAgency = _context.TrekkingAgencies.Where(a => a.Id == data.Expedition.TrekkingAgencyId).FirstOrDefault();
+                data.Expedition.Peak = _context.Peaks.Where(p => p.Id == data.Expedition.PeakId).FirstOrDefault();
+                _context.Expeditions.Add(data.Expedition);
+                _context.SaveChanges();
+                return RedirectToAction("AddExpedition");
+            }
+            return View("AddExpedition");
+        }
+        public IActionResult AddExpedition()
+        {
+            ExpeditionAdder data = new ExpeditionAdder();
+            data.Peaks = _context.Peaks.OrderBy(a => a.Name);
+            data.TrekkingAgencies = _context.TrekkingAgencies.OrderBy(a => a.Name);
+            return View(data);
+        }
 
         private IEnumerable<string> CreateArticle(List<Expedition> expeditions)
         {

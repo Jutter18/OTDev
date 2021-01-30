@@ -2,3 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+console.log("Initialization check for JS");
+
+$("#ExpeditionSubmit").click(function () {
+    alert("Expedition Submitted to Database");
+});
