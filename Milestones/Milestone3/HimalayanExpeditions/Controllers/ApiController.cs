@@ -22,7 +22,11 @@ namespace HimalayanExpeditions.Controllers
         public IActionResult count()
         {
             var unclimbed = db.Peaks.Where(e => e.Expeditions.ToList().Count() == 0).ToList().Count();
-            return Json(new { val = db.Expeditions.ToList().Count().ToString() + " Expeditions to Date, with " + unclimbed + " yet to be climbed!" });
-        }
+            var last = db.Expeditions.OrderByDescending(e => e.StartDate).First();
+            last.TrekkingAgency = db.TrekkingAgencies.Where(p => p.Id == last.TrekkingAgencyId).FirstOrDefault();
+            last.Peak = db.Peaks.Where(p => p.Id == last.PeakId).FirstOrDefault();
+            return Json(new { val = db.Expeditions.ToList().Count().ToString() + " Expeditions to Date, with " + unclimbed + " yet to be climbed!\n" +
+                "The newest Expedition was " + last.TrekkingAgency.Name + "'s trip to " + last.Peak.Name + " on " + last.StartDate.ToString() });
+            }
     }
 }
