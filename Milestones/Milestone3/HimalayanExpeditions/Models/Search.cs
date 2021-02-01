@@ -20,13 +20,6 @@ namespace HimalayanExpeditions.Models
         public string Peak { get; set; }
         public string Season { get; set; }
         public string TerminationReason { get; set; }
-       
-        // Climbers
-        public int? Age { get; set; }
-        public string Name { get; set; }
-        public IEnumerable<Climber> ClimberList { get; set; }
-
-        //pageing
         public PagedResult<Expedition> ExpeditionList { get; set; }
         public bool Climbed { get; internal set; } //For if we decide to combine these searches
         public int? PageIndex { get; set; }
