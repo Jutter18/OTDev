@@ -1,3 +1,4 @@
+using cloudscribe.Pagination.Models;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,10 @@ namespace HimalayanExpeditions.Models
 {
     public class Search
     {
-        //Expeditions
+        public Search()
+        {
+            ExpeditionList = new PagedResult<Expedition>();
+        }
         public int? Year { get; set; }
         public int Count { get; set; }
         public string Peak { get; set; }
@@ -22,6 +26,8 @@ namespace HimalayanExpeditions.Models
         public int? Age { get; set; }
         public string Name { get; set; }
         public IEnumerable<Climber> ClimberList { get; set; }
+        public PagedResult<Expedition> ExpeditionList { get; set; }
         public bool Climbed { get; internal set; } //For if we decide to combine these searches
+        public int? PageIndex { get; set; }
     }
 }
