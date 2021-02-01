@@ -47,6 +47,42 @@ namespace HimalayanExpeditions.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Climber(Climber climber) {
+            if (ModelState.IsValid)
+            {
+                _context.Climbers.Add(climber);
+                _context.SaveChanges();
+                return RedirectToAction("Climber");
+            }
+            return View("Index");
+        }
+        [HttpGet]
+        public IActionResult Climber()
+        {
+            var temp = new Search
+            {
+                ClimberList = _context.Climbers.ToList()
+            };
+            return View("Climber", temp);
+        }
+
+        [HttpGet] 
+        public IActionResult SearchClimber(Search search)
+        {
+            if (ModelState.IsValid)
+            {
+                var temp = search.Name;
+                var climberList = _context.Climbers.Where(c => c.Name.Contains(temp)).ToList();
+                search.ClimberList = climberList;
+                return View("Climber", search);
+            }
+            else
+            {
+                return View("Climber", null);
+            }
+        }
         public IActionResult FindPeaks(Search search)
         {
             if (ModelState.IsValid)

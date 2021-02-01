@@ -17,6 +17,7 @@ namespace HimalayanExpeditions.Models
         {
         }
 
+        public virtual DbSet<Climber> Climbers { get; set; }
         public virtual DbSet<Expedition> Expeditions { get; set; }
         public virtual DbSet<Peak> Peaks { get; set; }
         public virtual DbSet<TrekkingAgency> TrekkingAgencies { get; set; }

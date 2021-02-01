@@ -10,12 +10,18 @@ namespace HimalayanExpeditions.Models
 {
     public class Search
     {
+        //Expeditions
         public int? Year { get; set; }
         public int Count { get; set; }
         public string Peak { get; set; }
         public string Season { get; set; }
         public string TerminationReason { get; set; }
         public IEnumerable<Expedition> ExpeditionList { get; set; }
+       
+        // Climbers
+        public int? Age { get; set; }
+        public string Name { get; set; }
+        public IEnumerable<Climber> ClimberList { get; set; }
         public bool Climbed { get; internal set; } //For if we decide to combine these searches
     }
 }
