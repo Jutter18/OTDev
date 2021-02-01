@@ -70,7 +70,7 @@ namespace HimalayanExpeditions.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> FindPeaks(Search search, int pageNumber = 1)
+       
 
         [HttpPost]
         public IActionResult Climber(Climber climber) {
@@ -107,12 +107,11 @@ namespace HimalayanExpeditions.Controllers
                 return View("Climber", null);
             }
         }
-        public IActionResult FindPeaks(Search search)
+        public async Task<IActionResult> FindPeaks(Search search, int pageNumber = 1)
         {
             if (ModelState.IsValid)
             {
-                var expeditionList = _context.Expeditions.Where(s => s.TerminationReason != "Success (main peak)").Include(p => p.Peak).ToList();
-
+                int pageSize = 20;
                 var offset = (pageSize * pageNumber) - pageSize;
                 IQueryable<Expedition> expeditionList = _context.Expeditions.Where(s => s.TerminationReason != "Success (main peak)").Include(p => p.Peak).OrderBy(p => p.Peak.Name)
                     .Skip(offset)

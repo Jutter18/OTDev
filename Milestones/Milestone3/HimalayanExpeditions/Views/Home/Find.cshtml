@@ -1,39 +1,25 @@
 @using cloudscribe.Web.Pagination
 @model Search
-
 @{ ViewData["Title"] = "Find an expedition"; }
-
-<div class="row">
-
-    <div class="col">
-        <div class="card shadow-lg" style="opacity:0.7;background-color:aliceblue;">
-            <h3 class="card-title">Search</h3>
+    <h1>Search</h1>
 
             <form asp-controller="Home" asp-action="FindPeaks" method=get>
                 <div>
-                    <label class="card-text"> Season  </label>
-                    <select class="form-check-inline" asp-for="Season">
                         <option value="Any">Any</option>
                         <option value="Winter">Winter</option>
                         <option value="Spring">Spring</option>
                         <option value="Summer">Summer</option>
                         <option value="Autumn">Autumn</option>
                     </select>
-                    <button class="btn btn-primary" type="submit">Search</button>
                 </div>
             </form>
             <p class="card-footer">Looking for a Challenge? Find Expeditions that have never been completed:</p>
         </div>
-    </div>
-    <div class="col">
-        <div class="card shadow-lg" style="opacity:0.7;background-color:aliceblue;">
-            <h3 class="card-title">Search Expeditions</h3>
             <form asp-controller="Home" asp-action="Find" method=get>
                 <div>
                     <label asp-for="Year"> Year  </label>
                     <input asp-for="Year" min="1920" max="2019">
                     <label asp-for="Peak"> Peak  </label>
-                    <input asp-for="Peak"><br />
                     <label asp-for="Season"> Season  </label>
                     <select asp-for="Season">
                         <option value="Any"> Any</option>
@@ -60,7 +46,6 @@
                         <option value="Attempt rumoured">Attempt rumoured</option>
                         <option value="Other">Other</option>
                     </select>
-                    <button class="btn btn-primary" type="submit"> Search </button>
                 </div>
             </form>
 
@@ -70,8 +55,6 @@
 
 <br />
 
-@if (Model != null)
-{
     @if (Model != null)
     {
         <p>@Model.Count Results Returned</p>
@@ -86,8 +69,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.ExpeditionList.Data)
-                    {
+                   @foreach(var item in Model.ExpeditionList.Data) {
                         <tr>
                             <td> @item.Year </td>
                             <td> @item.Peak.Name </td>
@@ -99,14 +81,3 @@
             </table>
         </div>
     }
-    <cs-pager cs-pager-li-current-class="page-item active"
-              cs-pager-li-other-class="page-item"
-              cs-pager-li-non-active-class="page-item disabled"
-              cs-pager-link-current-class="page-link"
-              cs-pager-link-other-class="page-link"
-              asp-action="Find"
-              asp-controller="Home"
-              asp-route-pagesize="@Model.ExpeditionList.PageSize"
-              cs-paging-pagenumber="@Model.ExpeditionList.PageNumber"
-              cs-paging-totalitems="@Model.ExpeditionList.TotalItems"></cs-pager>
-}
