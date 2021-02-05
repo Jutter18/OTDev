@@ -11,11 +11,11 @@
 
 ## Table of Contents
 1. [Project Description](#MealFridge)
-2. [Installation](##Installation-And-Usage)
-3. [Contributing](##Contributing-Guidelines)
-4. [Credits](##Credits)
-5. [Team Mettings](##Meeting-Times)
-5. [License](##License)
+2. [Installation](#Installation-And-Usage)
+3. [Contributing](#Contributing-Guidelines)
+4. [Credits](#Credits)
+5. [Team Mettings](#Meeting-Times)
+5. [License](#License)
 
 <br><br>
 
