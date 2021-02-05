@@ -15,7 +15,6 @@
 3. [Contributing](#Contributing-Guidelines)
 4. [Credits](#Credits)
 5. [Team Mettings](#Meeting-Times)
-5. [License](#License)
 
 <br><br>
 
