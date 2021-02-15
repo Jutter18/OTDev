@@ -5,7 +5,7 @@
 <div class="navbar">
     <div class="container">
         <ul class="nav nav-tabs">
-            <li class="nav-item"> 
+            <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions">Dietary Restrictions</a>
             </li>
             <li class="nav-item">
@@ -14,6 +14,10 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="AccountManagement" asp-action="Index">Manage Account Settings</a>
+            </li>
         </ul>
     </div>
 </div>
+<a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change Password</a>
