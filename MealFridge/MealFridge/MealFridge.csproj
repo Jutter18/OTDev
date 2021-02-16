@@ -25,5 +25,9 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Pages\Account\" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Watch Include="**/*.ts" />
+    <Watch Include="**/*.cshtml" />
+    <Watch Include="**/*.css" />
+  </ItemGroup>
 </Project>
