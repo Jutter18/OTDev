@@ -20,15 +20,6 @@ namespace MealFridge.Controllers
         }
         public ActionResult Index()
         {
-            //remove before commit 
-            //var secret = _configuration["SpoonacularPAK:PersonalAccessKey"];
-            //Debug.WriteLine("Secret: " + secret);
-            //SpoonacularAPI api = new SpoonacularAPI("https://api.spoonacular.com/recipes/complexSearch", secret);
-            //IEnumerable<Recipe> test = api.SearchAPI("rice");
-            //foreach (var i in test)
-            //{
-            //    Debug.WriteLine(i.Title);
-            //}
             return View();
         }
     }
