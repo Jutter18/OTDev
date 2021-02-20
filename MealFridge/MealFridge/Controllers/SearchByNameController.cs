@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MealFridge.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,10 +14,13 @@ namespace MealFridge.Controllers
     {
 
         public ActionResult Index()
+        private readonly IConfiguration _configuration;
+        // GET: SearchByName
+        public SearchByNameController(IConfiguration config)
         {
-            return View();
+            _configuration = config;
         }
-        public ActionResult Index(string recipeName)
+        public ActionResult Index()
         {
 
             return View();
