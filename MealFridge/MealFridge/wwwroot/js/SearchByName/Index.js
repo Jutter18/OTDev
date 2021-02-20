@@ -9,19 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class Search {
     constructor(query) {
-        this.URL = "https://api.spoonacular.com/recipes/complexSearch";
+        this.URL = "/api/SearchByName/";
         this.query = query;
     }
     getPossibleRecipes() {
         return __awaiter(this, void 0, void 0, function* () {
             return Promise.resolve(this.fetchAPI(this.query).then(data => {
-                this.showRecipes(data["results"]);
+                this.showRecipes(data);
             }));
         });
     }
     fetchAPI(query) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = fetch(this.URL + "?apiKey=&query=" + query, {
+            const response = fetch(this.URL + query, {
                 method: 'GET'
             });
             return (yield response).json();
@@ -29,7 +29,7 @@ class Search {
     }
     showRecipes(recipes) {
         let main = document.getElementById("main");
-        if (recipes === null) {
+        if (recipes.length < 1) {
             main.append("<p> No results found! </p>");
             return;
         }
@@ -48,6 +48,15 @@ class Search {
         });
     }
 }
+window.onload = () => {
+    const prevSearch = window.sessionStorage.getItem("prevSearch");
+    if (prevSearch !== null) {
+        let newSearch = document.getElementById("sbn");
+        newSearch.value = prevSearch;
+        window.sessionStorage.clear();
+        searchByName();
+    }
+};
 function searchByName() {
     let search = document.getElementById("sbn");
     if (!search.value) {
@@ -56,5 +65,10 @@ function searchByName() {
     }
     let searcher = new Search(search.value);
     searcher.getPossibleRecipes();
+}
+function searchFromMainPage() {
+    let search = document.getElementById("sbn");
+    window.sessionStorage.setItem("prevSearch", search.value);
+    window.location.href = "/SearchByName";
 }
 //# sourceMappingURL=Index.js.map

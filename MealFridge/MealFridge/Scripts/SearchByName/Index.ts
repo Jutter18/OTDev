@@ -1,25 +1,21 @@
 ﻿class Search {
-    //Hey Chris! How's it going buddy? Replace
-    //This url with the api one when you are done 
-    //thx 
-    private readonly URL: string = "https://api.spoonacular.com/recipes/complexSearch"
+    private readonly URL: string = "/api/SearchByName/"
     private readonly query: string;
     public recipes: [string];
     constructor(query: string) {
         this.query = query;
-
     }
 
     public async getPossibleRecipes(): Promise<void | [string]> {
 
         return Promise.resolve(this.fetchAPI(this.query).then(data => {
-            this.showRecipes(<[Object]>data["results"]);
+            this.showRecipes(<[Object]>data);
         }))
 
     }
 
     private async fetchAPI<T>(query: string): Promise<T> {
-        const response = fetch(this.URL + "?apiKey=&query=" + query, {
+        const response = fetch(this.URL + query, {
             method: 'GET'
         })
         return (await response).json() as Promise<T>;
@@ -27,7 +23,7 @@
     }
     private showRecipes(recipes: [Object]) {
         let main: HTMLElement = document.getElementById("main");
-        if (recipes === null) {
+        if (recipes.length < 1) {
             main.append("<p> No results found! </p>");
             return;
         }
@@ -47,6 +43,16 @@
     }
 }
 
+window.onload = () => {
+    const prevSearch = window.sessionStorage.getItem("prevSearch");
+    if (prevSearch !== null) {
+        let newSearch = <HTMLInputElement>document.getElementById("sbn");
+        newSearch.value = prevSearch;
+        window.sessionStorage.clear();
+        searchByName()
+    }
+};
+
 
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
@@ -56,4 +62,10 @@ function searchByName(): void {
     }
     let searcher = new Search(search.value);
     searcher.getPossibleRecipes();
+}
+
+function searchFromMainPage(): void {
+    let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
+    window.sessionStorage.setItem("prevSearch", search.value);
+    window.location.href = "/SearchByName";
 }

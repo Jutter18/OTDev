@@ -13,14 +13,13 @@ namespace MealFridge.Controllers
     public class SearchByNameController : Controller
     {
 
-        public ActionResult Index()
         private readonly IConfiguration _configuration;
         // GET: SearchByName
         public SearchByNameController(IConfiguration config)
         {
             _configuration = config;
         }
-        public ActionResult Index()
+        public IActionResult Index()
         {
 
             return View();
