@@ -8,7 +8,7 @@ namespace MealFridge.Models
     public class SpoonacularRecipe
     {
 
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string ImageURL { get; set; }
         public string ImageType { get; set; }
