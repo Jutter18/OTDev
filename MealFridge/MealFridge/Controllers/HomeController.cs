@@ -12,10 +12,11 @@ namespace MealFridge.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly MealFridgeDbContext _db;
+        public HomeController(ILogger<HomeController> logger, MealFridgeDbContext context)
         {
             _logger = logger;
+            _db = context;
         }
 
         public IActionResult Index()

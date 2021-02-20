@@ -21,21 +21,20 @@ namespace MealFridge.Utils
             Source = endpoint;
             Secret = key;
         }
-        public List<SpoonacularRecipe> SearchAPI(string query)
+        public List<Recipe> SearchAPI(string query)
         {
             var jsonResponse = SendRequest(Source, Secret, query);
             var recipes = JObject.Parse(jsonResponse);
             if ((int)recipes["number"] == 0)
                 return null;
 
-            var output = new List<SpoonacularRecipe>();
+            var output = new List<Recipe>();
             foreach (var recipe in recipes["results"])
-                output.Add(new SpoonacularRecipe
+                output.Add(new Recipe
                 {
                     Id = (int)recipe["id"],
                     Title = (string)recipe["title"],
-                    ImageURL = (string)recipe["image"],
-                    ImageType = (string)recipe["imageType"]
+                    Image = "https://spoonacular.com/recipeImages/" + recipe["id"].ToString() + "-556x370." + recipe["imageType"].ToString()
                 });
             return output;
         }

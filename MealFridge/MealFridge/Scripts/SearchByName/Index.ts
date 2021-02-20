@@ -7,11 +7,9 @@
     }
 
     public async getPossibleRecipes(): Promise<void | [string]> {
-
         return Promise.resolve(this.fetchAPI(this.query).then(data => {
             this.showRecipes(<[Object]>data);
         }))
-
     }
 
     private async fetchAPI<T>(query: string): Promise<T> {
@@ -23,16 +21,17 @@
     }
     private showRecipes(recipes: [Object]) {
         let main: HTMLElement = document.getElementById("main");
+        main.innerHTML = "";
         if (recipes.length < 1) {
-            main.append("<p> No results found! </p>");
+            main.innerHTML += "<p> No results found! </p>";
             return;
         }
         recipes.forEach(r => {
-            const imagePath: string = "https://spoonacular.com/recipeImages/" + r["id"] + "-556x370." + r["imageType"];
+
             main.innerHTML +=
                 `
                 <div class="card">
-                    <img class="card-img-top" src="${imagePath}" alt="Recipe Image">
+                    <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
                     <div class="card-body">
                         <h4 class="card-title">${r["title"]}</h4>
                         <a href="#!" class="btn btn-primary">Recipe Details</a>

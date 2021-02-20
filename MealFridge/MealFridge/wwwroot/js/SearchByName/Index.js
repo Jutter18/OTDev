@@ -29,16 +29,16 @@ class Search {
     }
     showRecipes(recipes) {
         let main = document.getElementById("main");
+        main.innerHTML = "";
         if (recipes.length < 1) {
-            main.append("<p> No results found! </p>");
+            main.innerHTML += "<p> No results found! </p>";
             return;
         }
         recipes.forEach(r => {
-            const imagePath = "https://spoonacular.com/recipeImages/" + r["id"] + "-556x370." + r["imageType"];
             main.innerHTML +=
                 `
                 <div class="card">
-                    <img class="card-img-top" src="${imagePath}" alt="Recipe Image">
+                    <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
                     <div class="card-body">
                         <h4 class="card-title">${r["title"]}</h4>
                         <a href="#!" class="btn btn-primary">Recipe Details</a>
