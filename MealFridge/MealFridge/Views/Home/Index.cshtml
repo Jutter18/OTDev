@@ -5,12 +5,15 @@
     <div class="jumbotron">
         <h3 class="text-center">Search by Recipe Name!</h3>
         <div class="input-group">
-            <input id="sbn" type="text" class="form-control" placeholder="Hot Chili" aria-label="Search for recipes by name">
-            <div class="input-group-append">
-                <button class="btn btn-success" onclick="searchByName()" type="button">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-            </div>
+            <form asp-route="SearchByName" asp-action="Index">
+                <input asp-route-recipe="" id="sbn" type="text" class="form-control" placeholder="Hot Chili" aria-label="Search for recipes by name">
+                <div class="input-group-append">
+                    <button class="btn btn-success" onclick="searchByName()" type="button">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </form>
+
         </div>
     </div>
     <div id="main" class="card-columns"></div>

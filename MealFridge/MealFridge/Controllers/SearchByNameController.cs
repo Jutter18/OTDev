@@ -9,9 +9,14 @@ namespace MealFridge.Controllers
 {
     public class SearchByNameController : Controller
     {
-        // GET: SearchByName
+
         public ActionResult Index()
         {
+            return View();
+        }
+        public ActionResult Index(string recipeName)
+        {
+
             return View();
         }
     }
