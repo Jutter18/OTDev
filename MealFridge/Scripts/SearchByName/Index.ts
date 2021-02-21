@@ -30,7 +30,7 @@
 
             main.innerHTML +=
                 `
-                <div class="card">
+                <div class="card shadow-lg">
                     <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
                     <div class="card-body">
                         <h4 class="card-title">${r["title"]}</h4>

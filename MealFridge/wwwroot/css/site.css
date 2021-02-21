@@ -72,9 +72,11 @@ body {
 
 .jumbotron {
     background-color: #FFF;
-    border: 5px solid #0CA789;
 }
 .card {
     background-color: #FFF;
-    border: 5px solid #0CA789;
+}
+
+.shadow-lg {
+    box-shadow: 0 .5rem .5rem rgba(12,167,137,.75) !important;
 }
