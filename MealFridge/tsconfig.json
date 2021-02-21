@@ -3,12 +3,16 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "noEmitOnError": true,
-    "removeComments": false,
+    "removeComments": true,
     "sourceMap": true,
-    "target": "es5",
+    "moduleResolution": "Classic",
+    "module": "commonjs",
+    "target": "ES2015",
+    "lib": [ "es2015.promise", "es2016", "es5", "dom" ],
+    "rootDir": "Scripts/",
     "outDir": "wwwroot/js"
   },
   "include": [
-    "scripts/**/*"
+    "Scripts/"
   ]
 }
