@@ -1,4 +1,5 @@
-﻿﻿window.onload = () => {
+﻿window.onload = () => {
+
     const prevSearch = window.sessionStorage.getItem("prevSearch");
     if (prevSearch !== null) {
         let newSearch = <HTMLInputElement>document.getElementById("sbn");
@@ -7,6 +8,7 @@
         searchByName()
     }
 };
+
 
 class Search {
     private readonly URL: string = "/api/SearchByName/"
@@ -68,4 +70,5 @@ inputSearch.addEventListener("keydown", (e) => {
     if (e.keyCode === 13) {
         searchByName();
     }
-}); 
+
+});
