@@ -1,4 +1,14 @@
-﻿class Search {
+﻿﻿window.onload = () => {
+    const prevSearch = window.sessionStorage.getItem("prevSearch");
+    if (prevSearch !== null) {
+        let newSearch = <HTMLInputElement>document.getElementById("sbn");
+        newSearch.value = prevSearch;
+        window.sessionStorage.clear();
+        searchByName()
+    }
+};
+
+class Search {
     private readonly URL: string = "/api/SearchByName/"
     private readonly query: string;
     public recipes: [string];
@@ -42,17 +52,6 @@
     }
 }
 
-window.onload = () => {
-    const prevSearch = window.sessionStorage.getItem("prevSearch");
-    if (prevSearch !== null) {
-        let newSearch = <HTMLInputElement>document.getElementById("sbn");
-        newSearch.value = prevSearch;
-        window.sessionStorage.clear();
-        searchByName()
-    }
-};
-
-
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     if (!search.value) {
@@ -63,8 +62,10 @@ function searchByName(): void {
     searcher.getPossibleRecipes();
 }
 
-function searchFromMainPage(): void {
-    let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
-    window.sessionStorage.setItem("prevSearch", search.value);
-    window.location.href = "/SearchByName";
-}
+const inputSearch: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
+inputSearch.addEventListener("keydown", (e) => {
+    //checks whether the pressed key is "Enter"
+    if (e.keyCode === 13) {
+        searchByName();
+    }
+}); 
