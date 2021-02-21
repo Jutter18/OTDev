@@ -7,6 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+window.onload = () => {
+    const prevSearch = window.sessionStorage.getItem("prevSearch");
+    if (prevSearch !== null) {
+        let newSearch = document.getElementById("sbn");
+        newSearch.value = prevSearch;
+        window.sessionStorage.clear();
+        searchByName();
+    }
+};
 class Search {
     constructor(query) {
         this.URL = "/api/SearchByName/";
@@ -48,15 +57,6 @@ class Search {
         });
     }
 }
-window.onload = () => {
-    const prevSearch = window.sessionStorage.getItem("prevSearch");
-    if (prevSearch !== null) {
-        let newSearch = document.getElementById("sbn");
-        newSearch.value = prevSearch;
-        window.sessionStorage.clear();
-        searchByName();
-    }
-};
 function searchByName() {
     let search = document.getElementById("sbn");
     if (!search.value) {
@@ -66,9 +66,10 @@ function searchByName() {
     let searcher = new Search(search.value);
     searcher.getPossibleRecipes();
 }
-function searchFromMainPage() {
-    let search = document.getElementById("sbn");
-    window.sessionStorage.setItem("prevSearch", search.value);
-    window.location.href = "/SearchByName";
-}
+const inputSearch = document.getElementById("sbn");
+inputSearch.addEventListener("keydown", (e) => {
+    if (e.keyCode === 13) {
+        searchByName();
+    }
+});
 //# sourceMappingURL=Index.js.map
