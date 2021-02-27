@@ -57,11 +57,6 @@ namespace MealFridge.Utils
                         });
                     }
                     break;
-
-                default:
-                    output = null;
-                    recipes = null;
-                    break;
             }
             return output;
         }

@@ -26,18 +26,24 @@ namespace MealFridge.Controllers
             var ingredient = _db.Ingredients.Where(a => a.Name.Contains(query)).FirstOrDefault();
             var recipesWithIngredient = _db.Recipeingreds.Where(a => a.IngredId == ingredient.Id).Take(10);
             List<Recipe> possibleRecipes = new List<Recipe>();
-
-            if (possibleRecipes.Count > 0)
-            {
+            
+            //Currently no ingredients in the DB, will always be true. May require testing later
+            if (ingredient != null)
+            { 
                 foreach (var recipeIngred in recipesWithIngredient)
                 {
                     possibleRecipes.Add(_db.Recipes.Where(a => a.Id == recipeIngred.RecipeId).FirstOrDefault());
                 }
             }
+
             if (possibleRecipes.Count < 10)
-            { 
+            {
                 var apiQuerier = new SearchSpnApi(_searchByIngredientEndpoint, _config["SApiKey"]);
                 possibleRecipes = apiQuerier.SearchAPI(query, "Ingredient");
+                if (possibleRecipes == null)
+                {
+                    possibleRecipes = new List<Recipe>();
+                }
                 foreach (var recipe in possibleRecipes)
                 {
                     if (!_db.Recipes.Any(t => t.Id == recipe.Id))
@@ -47,7 +53,7 @@ namespace MealFridge.Controllers
                 }
                 _db.SaveChanges();
             }
-            return possibleRecipes.OrderBy(r => r.Id).ToList();
+            return possibleRecipes;
         }
 
         [Route("api/SearchByName/{query}/{type}")]
@@ -56,7 +62,7 @@ namespace MealFridge.Controllers
             if (type == "Ingredient")
             {
                 var possibleRecipesByIngredient = SearchByIngredient(query);
-                return Json(possibleRecipesByIngredient.ToList());
+                return Json(possibleRecipesByIngredient.OrderBy(r => r.Id).ToList());
             }
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query))
