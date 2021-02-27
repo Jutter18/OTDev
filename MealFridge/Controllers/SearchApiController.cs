@@ -27,7 +27,6 @@ namespace MealFridge.Controllers
             var recipesWithIngredient = _db.Recipeingreds.Where(a => a.IngredId == ingredient.Id).Take(10);
             List<Recipe> possibleRecipes = new List<Recipe>();
             
-            //Currently no ingredients in the DB, will always be true. May require testing later
             if (ingredient != null)
             { 
                 foreach (var recipeIngred in recipesWithIngredient)
