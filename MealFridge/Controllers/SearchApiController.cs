@@ -1,23 +1,17 @@
-﻿using MealFridge.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MealFridge.Utils;
 using System;
 using MealFridge.Models;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-
 namespace MealFridge.Controllers
 {
-    public class SearchController : Controller
+    public class SearchApiController : Controller
     {
         private readonly IConfiguration _config;
         private readonly string _searchByNameEndpoint = "https://api.spoonacular.com/recipes/complexSearch";
         private readonly MealFridgeDbContext _db;
-        public SearchController(IConfiguration config, MealFridgeDbContext context)
+        public SearchApiController(IConfiguration config, MealFridgeDbContext context)
         {
             _db = context;
             _config = config;
@@ -38,22 +32,14 @@ namespace MealFridge.Controllers
                 foreach (var recipe in possibleRecipes)
                 {
                     if (!_db.Recipes.Any(t => t.Id == recipe.Id))
-        private readonly IConfiguration _configuration;
-        // GET: SearchByName
-        public SearchController(IConfiguration config)
-        {
+                    {
                         _db.Recipes.Add(recipe);
                     }
                 }
                 _db.SaveChanges();
-            _configuration = config;
-        }
-        public IActionResult Index()
-        {
+            }
 
             return Json(possibleRecipes.OrderBy(r => r.Id).ToList());
-            return View();
         }
-
     }
 }

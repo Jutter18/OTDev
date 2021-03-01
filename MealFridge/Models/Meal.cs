@@ -11,11 +11,7 @@ namespace MealFridge.Models
     [Table("MEAL")]
     public partial class Meal
     {
-        [Key]
-        [Column("account_id")]
-        public int AccountId { get; set; }
-        [Key]
-        [Column("day", TypeName = "datetime")]
+        public string AccountId { get; set; }
         public DateTime Day { get; set; }
         [Column("recipe_id")]
         public int? RecipeId { get; set; }

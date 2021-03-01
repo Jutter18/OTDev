@@ -43,4 +43,7 @@
     <Watch Include="**/*.cshtml" />
     <Watch Include="**/*.css" />
   </ItemGroup>
+  <ItemGroup>
+    <Watch Remove="Views\Fridge\Index.cshtml" />
+  </ItemGroup>
 </Project>

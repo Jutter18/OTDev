@@ -13,11 +13,7 @@ namespace MealFridge.Models
     {
         [Column("id")]
         public int? Id { get; set; }
-        [Key]
-        [Column("fridge_id")]
-        public int FridgeId { get; set; }
-        [Key]
-        [Column("ingred_id")]
+        public string AccountId { get; set; }
         public int IngredId { get; set; }
         [Column("quantity")]
         public int? Quantity { get; set; }

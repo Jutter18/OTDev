@@ -11,11 +11,7 @@ namespace MealFridge.Models
     [Table("RESTRICTIONS")]
     public partial class Restriction
     {
-        [Key]
-        [Column("account_id")]
-        public int AccountId { get; set; }
-        [Key]
-        [Column("ingred_id")]
+        public string AccountId { get; set; }
         public int IngredId { get; set; }
         [Column("dislike")]
         public bool? Dislike { get; set; }

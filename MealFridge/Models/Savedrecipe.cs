@@ -11,11 +11,7 @@ namespace MealFridge.Models
     [Table("SAVEDRECIPES")]
     public partial class Savedrecipe
     {
-        [Key]
-        [Column("account_id")]
-        public int AccountId { get; set; }
-        [Key]
-        [Column("recipe_id")]
+        public string AccountId { get; set; }
         public int RecipeId { get; set; }
         [Column("shelved")]
         public bool? Shelved { get; set; }
