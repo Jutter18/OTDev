@@ -20,6 +20,7 @@ class Search {
     constructor(query) {
         this.URL = "/api/SearchByName/";
         this.query = query;
+        this.type = type;
     }
     getPossibleRecipes() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -59,6 +60,7 @@ class Search {
 }
 function searchByName() {
     let search = document.getElementById("sbn");
+    let type = document.getElementById("searchType");
     if (!search.value) {
         alert("Search can not be empty!");
         return;

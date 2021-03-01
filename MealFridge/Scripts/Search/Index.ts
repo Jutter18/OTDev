@@ -13,9 +13,11 @@
 class Search {
     private readonly URL: string = "/api/SearchByName/"
     private readonly query: string;
+    private readonly type: string;
     public recipes: [string];
     constructor(query: string) {
         this.query = query;
+        this.type = type;
     }
 
     public async getPossibleRecipes(): Promise<void | [string]> {
@@ -56,6 +58,7 @@ class Search {
 
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
+    let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
     if (!search.value) {
         alert("Search can not be empty!");
         return;

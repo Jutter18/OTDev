@@ -17,6 +17,7 @@ namespace MealFridge.Models
         {
         }
 
+        public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Fridge> Fridges { get; set; }
         public virtual DbSet<Ingredient> Ingredients { get; set; }
         public virtual DbSet<Meal> Meals { get; set; }
