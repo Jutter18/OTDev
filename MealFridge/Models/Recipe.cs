@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -24,6 +24,7 @@ namespace MealFridge.Models
 
         public virtual ICollection<Meal> Meals { get; set; }
         public virtual ICollection<Recipeingred> Recipeingreds { get; set; }
+
         public virtual ICollection<Savedrecipe> Savedrecipes { get; set; }
     }
 }

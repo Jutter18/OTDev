@@ -1,9 +1,11 @@
-﻿CREATE TABLE [FRIDGE] (
+
+CREATE TABLE [FRIDGE] (
   [id] int,
   [account_id] NVARCHAR(255),
   [ingred_id] int,
   [quantity] int,
   PRIMARY KEY ([account_id], [ingred_id])
+
 )
 GO
 
@@ -54,14 +56,13 @@ GO
 
 CREATE TABLE [MEAL] (
   [account_id] NVARCHAR(255),
+  [account_id] int,
   [day] datetime,
   [recipe_id] int,
   [meal] nvarchar(255),
   PRIMARY KEY ([account_id], [day])
 )
 GO
-
-
 
 ALTER TABLE [FRIDGE] ADD CONSTRAINT [Fridge_FK_Ingred] FOREIGN KEY ([ingred_id]) REFERENCES [INGREDIENTS] ([id])
 GO

@@ -24,6 +24,5 @@ namespace MealFridge.Controllers
 
             return View();
         }
-
     }
 }

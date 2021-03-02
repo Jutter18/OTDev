@@ -39,6 +39,7 @@ namespace MealFridge.Models
 
             modelBuilder.Entity<Fridge>(entity =>
             {
+
                 entity.HasKey(e => new { e.AccountId, e.IngredId })
                     .HasName("PK__FRIDGE__9100B6D1FEFEAFD7");
 
@@ -54,6 +55,7 @@ namespace MealFridge.Models
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
+
                 entity.HasOne(d => d.Ingred)
                     .WithMany(p => p.Fridges)
                     .HasForeignKey(d => d.IngredId)
@@ -63,6 +65,7 @@ namespace MealFridge.Models
 
             modelBuilder.Entity<Ingredient>(entity =>
             {
+
                 entity.ToTable("INGREDIENTS");
 
                 entity.Property(e => e.Id)
@@ -80,11 +83,13 @@ namespace MealFridge.Models
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .HasColumnName("name");
+
             });
 
             modelBuilder.Entity<Meal>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.Day })
+
                     .HasName("PK__MEAL__4B255BFF93C1C7D7");
 
                 entity.ToTable("MEAL");
@@ -102,6 +107,7 @@ namespace MealFridge.Models
                     .HasColumnName("meal");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
+
 
                 entity.HasOne(d => d.Recipe)
                     .WithMany(p => p.Meals)
@@ -136,11 +142,13 @@ namespace MealFridge.Models
                 entity.Property(e => e.Title)
                     .HasMaxLength(255)
                     .HasColumnName("title");
+
             });
 
             modelBuilder.Entity<Recipeingred>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeId, e.IngredId })
+
                     .HasName("PK__RECIPEIN__E2D379876DD2C321");
 
                 entity.ToTable("RECIPEINGRED");
@@ -158,6 +166,7 @@ namespace MealFridge.Models
                     .HasColumnName("direction");
 
                 entity.Property(e => e.Step).HasColumnName("step");
+
 
                 entity.HasOne(d => d.Ingred)
                     .WithMany(p => p.Recipeingreds)
@@ -187,6 +196,7 @@ namespace MealFridge.Models
 
                 entity.Property(e => e.Dislike).HasColumnName("dislike");
 
+
                 entity.HasOne(d => d.Ingred)
                     .WithMany(p => p.Restrictions)
                     .HasForeignKey(d => d.IngredId)
@@ -208,6 +218,7 @@ namespace MealFridge.Models
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
                 entity.Property(e => e.Shelved).HasColumnName("shelved");
+
 
                 entity.HasOne(d => d.Recipe)
                     .WithMany(p => p.Savedrecipes)
