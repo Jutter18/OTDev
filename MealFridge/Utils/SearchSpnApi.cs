@@ -13,20 +13,17 @@ namespace MealFridge.Utils
 {
     public class SearchSpnApi
     {
-        public string Source { get; set; }
-        private string Secret { get; set; }
+        private Query _query;
 
-        public SearchSpnApi(string endpoint, string key)
+        public SearchSpnApi(Query query)
         {
-            Source = endpoint;
-            Secret = key;
+            _query = query;
         }
-        public List<Recipe> SearchAPI(string query, string searchType)
+        public List<Recipe> SearchAPI()
         {
-            var jsonResponse = SendRequest(Source, Secret, query, searchType);
-            Debug.WriteLine(jsonResponse);
+            var jsonResponse = SendRequest();
             var output = new List<Recipe>();
-            switch (searchType)
+            switch (_query.SearchType)
             {
                 case "Recipe":
                     var recipes = JObject.Parse(jsonResponse);
@@ -60,33 +57,29 @@ namespace MealFridge.Utils
             }
             return output;
         }
-        private static string SendRequest(string url, string credentials, string query, string searchType)
+        private string SendRequest()
         {
-            //number selects the number of results to return from API (FOR FUTURE REFERENCE)
-            HttpWebRequest request;
-            switch (searchType)
+            try
             {
-                case "Recipe":
-                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
-                    break;
-                case "Ingredient":
-                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&ingredients=" + query + "&number=10");
-                    break;
-                default:
-                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
-                    break;
+                //number selects the number of results to return from API (FOR FUTURE REFERENCE)
+                HttpWebRequest request;
+                request = (HttpWebRequest)WebRequest.Create(_query.GetUrl);
+                request.Accept = "application/json";
+                string jsonString = null;
+                using (WebResponse response = request.GetResponse())
+                {
+                    Stream stream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(stream);
+                    jsonString = reader.ReadToEnd();
+                    reader.Close();
+                    stream.Close();
+                }
+                return jsonString;
             }
-            request.Accept = "application/json";
-            string jsonString = null;
-            using (WebResponse response = request.GetResponse())
+            catch
             {
-                Stream stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
-                jsonString = reader.ReadToEnd();
-                reader.Close();
-                stream.Close();
+                return null;
             }
-            return jsonString;
         }
     }
 }
