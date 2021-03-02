@@ -118,6 +118,7 @@ namespace MealFridge.Controllers
                 var querier = new SearchSpnApi(apiDetails);
                 return Json(querier.SearchAPI().OrderBy(r => r.Id).ToList());
             }
+            return null;
         }
     }
 }

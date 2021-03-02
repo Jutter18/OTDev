@@ -54,9 +54,32 @@ namespace MealFridge.Utils
                         });
                     }
                     break;
+                case "Details":
+                    var recipeDetails = JObject.Parse(jsonResponse);
+                    var detailedRecipe = new Recipe
+                    {
+                        Id = recipeDetails["id"].Value<int>(),
+                        Title = recipeDetails["title"].Value<string>(),
+                        Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>(),
+                        Summery = recipeDetails["sourceUrl"].Value<string>(),
+                        Recipeingreds = GetIngredients(recipeDetails["extendedIngredients"].Value<JArray>())
+
+                    }
+                    break;
             }
             return output;
         }
+
+        private ICollection<Recipeingred> GetIngredients(JArray ingredients)
+        {
+            var retingredients = new List<Recipeingred>();
+            foreach (var ing in ingredients)
+            {
+
+            }
+            return retingredients;
+        }
+
         private string SendRequest()
         {
             try
