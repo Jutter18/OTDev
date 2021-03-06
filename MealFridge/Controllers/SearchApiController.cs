@@ -8,21 +8,71 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace MealFridge.Controllers
 {
     public class SearchApiController : Controller
     {
         private readonly IConfiguration _config;
         private readonly string _searchByNameEndpoint = "https://api.spoonacular.com/recipes/complexSearch";
+
         private readonly string _searchByIngredientEndpoint = "https://api.spoonacular.com/recipes/findByIngredients";
         private readonly string _searchByRecipeEndpoint = "https://api.spoonacular.com/recipes/{id}/information";
+        private readonly string _searchIngredientByNameEndpoint = "https://api.spoonacular.com/food/ingredients/search";
+
         private readonly MealFridgeDbContext _db;
         public SearchApiController(IConfiguration config, MealFridgeDbContext context)
         {
             _db = context;
             _config = config;
         }
-        public List<Recipe> SearchByIngredient(string query)
+
+     
+        public List<Ingredient> SearchIngredient(string query)
+        {
+            Debug.WriteLine("Search Ingredient Query: " + query);
+            var ingredient = _db.Ingredients.Where(a => a.Name.Contains(query)).ToList();
+            List<Ingredient> possibleIngredients = new List<Ingredient>();
+
+            if (ingredient != null)
+            {
+                foreach (var i in ingredient)
+                {
+                    possibleIngredients.Add(_db.Ingredients.Where(a => a.Id == i.Id).FirstOrDefault());
+                }
+            }
+
+            if (possibleIngredients.Count < 10)
+            {
+                var apiQuerier = new SearchSpnApi(_searchIngredientByNameEndpoint, _config["SApiKey"]);
+                possibleIngredients = apiQuerier.SearchIngredientsApi(query, "Ingredients");
+                if (possibleIngredients == null)
+                {
+                    possibleIngredients = new List<Ingredient>();
+                }
+                foreach (var i in possibleIngredients)
+                {
+                    if (!_db.Ingredients.Any(t => t.Id == i.Id))
+                    {
+                        _db.Ingredients.Add(i);
+                    }
+                }
+                _db.SaveChanges();
+            }
+            return possibleIngredients;
+        }
+
+        [Route("api/SearchByIngredientName/{query}")]
+        public IActionResult SearchByIngredientName(string query){
+                var possibleRecipesByIngredient = SearchIngredient(query);
+               foreach(var i in possibleRecipesByIngredient)
+            {
+                Debug.WriteLine(i.Name);
+            }
+                return Json(possibleRecipesByIngredient.OrderBy(r => r.Id));
+            }
+
+public List<Recipe> SearchByIngredient(string query)
         {
             var ingredient = _db.Ingredients.Where(a => a.Name.Contains(query)).FirstOrDefault();
             var recipesWithIngredient = _db.Recipeingreds.Where(a => a.IngredId == ingredient.Id).Take(10);

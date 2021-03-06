@@ -1,4 +1,4 @@
-﻿
+
 window.onload = () => {
 
     const prevSearch = window.sessionStorage.getItem("prevSearch");
@@ -14,6 +14,7 @@ window.onload = () => {
 class Search {
     private readonly URL: string = "/api/SearchByName/"
     private readonly query: string;
+
     private readonly type: string;
     public recipes: [string];
     constructor(query: string, type: string) {
@@ -26,7 +27,6 @@ class Search {
             this.showRecipes(<[Object]>data);
         }))
     }
-
     private async fetchAPI<T>(query: string, type: string): Promise<T> {
         document.getElementById("spinner").innerHTML +=
             `

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +19,24 @@ namespace MealFridge.Utils
         {
             _query = query;
         }
+        public List<Ingredient> SearchIngredientsApi(string query, string searchType)
+        {
+            var jsonResponse = SendRequest(Source, Secret, query, searchType);
+            var output = new List<Ingredient>();
+            var ingredients = JObject.Parse(jsonResponse);
+            foreach (var i in ingredients["results"])
+            {
+                var temp = new Ingredient();
+                temp.Id = (int)i["id"];
+                temp.Name = (string)i["name"];
+                temp.Image = "https://spoonacular.com/cdn/ingredients_250x250/" + i["image"];
+                output.Add(temp);
+               
+            }
+            return output.ToList();
+        }
+
+        public List<Recipe> SearchAPI(string query, string searchType)
         public List<Recipe> SearchAPI()
         {
             var jsonResponse = SendRequest();
