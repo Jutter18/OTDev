@@ -1,4 +1,6 @@
-﻿
+﻿document.getElementById('print-list-button').addEventListener('click', e => {
+    window.print();
+})
 
 class Details {
     private readonly URL: string = "/api/RecipeDetails/";

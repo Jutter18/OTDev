@@ -84,3 +84,19 @@ body {
 .shadow-lg {
     box-shadow: 0 .5rem .5rem rgba(12,167,137,.75) !important;
 }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #innerShopping, #innerShopping * {
+        visibility: visible;
+    }
+
+    #innerShopping {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
