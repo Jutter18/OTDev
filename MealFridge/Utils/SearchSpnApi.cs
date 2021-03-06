@@ -13,6 +13,7 @@ namespace MealFridge.Utils
 {
     public class SearchSpnApi
     {
+        private Query _query;
         public string Source { get; set; }
         private string Secret { get; set; }
 
@@ -20,6 +21,10 @@ namespace MealFridge.Utils
         {
             Source = endpoint;
             Secret = key;
+        }
+        public SearchSpnApi(Query query)
+        {
+            _query = query;
         }
         public Ingredient IngredientDetails(Ingredient query, string searchType)
         {
@@ -33,9 +38,22 @@ namespace MealFridge.Utils
             }
             return query;
         }
+        
         public List<Ingredient> SearchIngredientsApi(string query, string searchType)
         {
-            var jsonResponse = SendRequest(Source, Secret, query, searchType);
+            if (Source != null)
+            {
+                var temp = new Query
+                {
+                    Url = Source,
+                    Credentials = Secret,
+                    QueryName = "query",
+                    QueryValue = query
+                };
+                _query = temp;
+            }
+
+            var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
             foreach (var i in ingredients["results"])
@@ -45,17 +63,15 @@ namespace MealFridge.Utils
                 temp.Name = (string)i["name"];
                 temp.Image = "https://spoonacular.com/cdn/ingredients_250x250/" + i["image"];
                 output.Add(temp);
-               
+
             }
             return output.ToList();
         }
-
-        public List<Recipe> SearchAPI(string query, string searchType)
+        public List<Recipe> SearchAPI()
         {
-            var jsonResponse = SendRequest(Source, Secret, query, searchType);
-            Debug.WriteLine(jsonResponse);
+            var jsonResponse = SendRequest();
             var output = new List<Recipe>();
-            switch (searchType)
+            switch (_query.SearchType)
             {
                 case "Recipe":
                     var recipes = JObject.Parse(jsonResponse);
@@ -86,8 +102,69 @@ namespace MealFridge.Utils
                         });
                     }
                     break;
+                case "Details":
+                    var recipeDetails = JObject.Parse(jsonResponse);
+                    var detailedRecipe = new Recipe
+                    {
+                        Id = recipeDetails["id"].Value<int>(),
+                        Title = recipeDetails["title"].Value<string>(),
+                        Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>(),
+                        Summery = recipeDetails["sourceUrl"].Value<string>(),
+                        Recipeingreds = GetIngredients(recipeDetails["extendedIngredients"].Value<JArray>())
+
+                    };
+                    output.Add(detailedRecipe);
+                    break;
+                default:
+                    Console.WriteLine("Never hit any case");
+                    break;
             }
             return output;
+        }
+
+        private ICollection<Recipeingred> GetIngredients(JArray ingredients)
+        {
+            var retingredients = new List<Recipeingred>();
+            foreach (var ing in ingredients)
+            {
+
+                retingredients.Add(new Recipeingred
+                {
+                    //Or amount + unit to get each component i.e 1.0 tbsp butter
+                    Amount = ing["original"]?.Value<string>(),
+                    Ingred = new Ingredient
+                    {
+                        Name = ing["name"]?.Value<string>(),
+                        Id = ing["id"].Value<int>()
+                    }
+                });
+
+            }
+            return retingredients;
+        }
+        private string SendRequest()
+        {
+            try
+            {
+                //number selects the number of results to return from API (FOR FUTURE REFERENCE)
+                HttpWebRequest request;
+                request = (HttpWebRequest)WebRequest.Create(_query.GetUrl);
+                request.Accept = "application/json";
+                string jsonString = null;
+                using (WebResponse response = request.GetResponse())
+                {
+                    Stream stream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(stream);
+                    jsonString = reader.ReadToEnd();
+                    reader.Close();
+                    stream.Close();
+                }
+                return jsonString;
+            }
+            catch
+            {
+                return null;
+            }
         }
         private static string SendRequest(string url, string credentials, string query, string searchType)
         {
@@ -120,5 +197,6 @@ namespace MealFridge.Utils
             }
             return jsonString;
         }
+
     }
 }
