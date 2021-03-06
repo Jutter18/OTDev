@@ -21,6 +21,18 @@ namespace MealFridge.Utils
             Source = endpoint;
             Secret = key;
         }
+        public Ingredient IngredientDetails(Ingredient query, string searchType)
+        {
+            var jsonResponse = SendRequest(Source, Secret, query.Id.ToString(), searchType);
+            var details = JObject.Parse(jsonResponse);
+            query.Aisle = (string)details["aisle"];
+            query.Cost = (decimal)details["estimatedCost"]["value"];
+            if ((string)details["estimatedCost"]["unit"] == "US Cents") 
+            {
+                query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
+            }
+            return query;
+        }
         public List<Ingredient> SearchIngredientsApi(string query, string searchType)
         {
             var jsonResponse = SendRequest(Source, Secret, query, searchType);
@@ -88,6 +100,9 @@ namespace MealFridge.Utils
                     break;
                 case "Ingredient":
                     request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&ingredients=" + query + "&number=10");
+                    break;
+                case "IngredientDetails":
+                    request = (HttpWebRequest)WebRequest.Create(url + query + "/information?apiKey=" + credentials + "&amount=1&unit=serving");
                     break;
                 default:
                     request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
