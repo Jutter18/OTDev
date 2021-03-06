@@ -67,6 +67,7 @@ function AddIngredient(id) {
     let amount = prompt("Please enter the amount", "1");
     if (amount != '' && !isNaN(+amount)) {
         fetch("Fridge/AddItem?id=" + id + "&amount=" + amount, {
+
             method: 'GET'
         });
     }
@@ -84,6 +85,7 @@ function ChangeIngredient(id) {
         }
     }
 }
+
 function SearchByIngredientName() {
     let search = document.getElementById("ingredSearch");
     if (!search.value) {
