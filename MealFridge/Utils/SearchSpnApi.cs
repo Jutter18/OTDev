@@ -14,14 +14,35 @@ namespace MealFridge.Utils
     public class SearchSpnApi
     {
         private Query _query;
+        public string Source { get; set; }
+        private string Secret { get; set; }
 
+        public SearchSpnApi(string endpoint, string key)
+        {
+            Source = endpoint;
+            Secret = key;
+        }
         public SearchSpnApi(Query query)
         {
             _query = query;
         }
         public List<Ingredient> SearchIngredientsApi(string query, string searchType)
         {
-            var jsonResponse = SendRequest(Source, Secret, query, searchType);
+
+
+            if (Source != null)
+            {
+                var temp = new Query
+                {
+                    Url = Source,
+                    Credentials = Secret,
+                    QueryName = "query",
+                    QueryValue = query
+                };
+                _query = temp;
+            }
+
+            var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
             foreach (var i in ingredients["results"])
@@ -31,12 +52,10 @@ namespace MealFridge.Utils
                 temp.Name = (string)i["name"];
                 temp.Image = "https://spoonacular.com/cdn/ingredients_250x250/" + i["image"];
                 output.Add(temp);
-               
+
             }
             return output.ToList();
         }
-
-        public List<Recipe> SearchAPI(string query, string searchType)
         public List<Recipe> SearchAPI()
         {
             var jsonResponse = SendRequest();
