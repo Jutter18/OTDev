@@ -1,4 +1,5 @@
-﻿window.onload = () => {
+﻿
+window.onload = () => {
 
     const prevSearch = window.sessionStorage.getItem("prevSearch");
     if (prevSearch !== null) {
@@ -55,12 +56,12 @@ class Search {
                 `
                 <button class="btn" type="button" onClick="getDetails(${r["id"]})" data-toggle="collapse" data-target="#info-${r["id"]}" aria-expanded="false" aria-controls="info-${r["id"]}">
                     <div class="card shadow-lg">
-                        <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
-                        <div class="card-body">
-                            <h4 class="card-title">${r["title"]}</h4>
-                        </div>
-                        <div id="info-${r["id"]}" class="collapse">
-                            ${r["title"]}
+                        <img class="card-img-top" src = "${r["image"]}" alt = "Recipe Image" >
+                        <div class="card-body" >
+                            <h4 class="card-title" > ${r["title"]} </h4>
+                            </div>
+                            <div id="info-${r["id"]}" class="collapse">
+                                ${r["title"]}
                         </div>
                     </div>
                 </button>

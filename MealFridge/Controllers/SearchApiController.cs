@@ -101,24 +101,27 @@ namespace MealFridge.Controllers
 
             return Json(possibleRecipes.OrderBy(r => r.Id).ToList());
         }
+
+
+
         [Route("/api/RecipeDetails/{id}")]
         public IActionResult RecipeDetails(string id)
         {
-            if (!int.TryParse(id, out var rid))
-                return StatusCode(400);
-            if (!_db.Recipes.Any(recipe => recipe.Recipeingreds == null && recipe.Id == rid))
+
+            var apiDetails = new Query
             {
-                var apiDetails = new Query
-                {
-                    Credentials = _config["SApiKey"],
-                    QueryName = "id",
-                    QueryValue = id,
-                    Url = _searchByRecipeEndpoint.Replace("{id}", id)
-                };
-                var querier = new SearchSpnApi(apiDetails);
-                return Json(querier.SearchAPI().OrderBy(r => r.Id).ToList());
-            }
-            return null;
+                Credentials = _config["SApiKey"],
+                QueryName = "id",
+                QueryValue = id,
+                Url = _searchByRecipeEndpoint.Replace("{id}", id),
+                SearchType = "Details"
+            };
+            var querier = new SearchSpnApi(apiDetails);
+            var results = querier.SearchAPI().OrderBy(r => r.Id).ToList();
+            results.ForEach(r => Console.WriteLine("Recipe + " + r.Title));
+            return Json(results);
         }
+
     }
 }
+

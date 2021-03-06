@@ -64,7 +64,11 @@ namespace MealFridge.Utils
                         Summery = recipeDetails["sourceUrl"].Value<string>(),
                         Recipeingreds = GetIngredients(recipeDetails["extendedIngredients"].Value<JArray>())
 
-                    }
+                    };
+                    output.Add(detailedRecipe);
+                    break;
+                default:
+                    Console.WriteLine("Never hit any case");
                     break;
             }
             return output;
@@ -75,6 +79,17 @@ namespace MealFridge.Utils
             var retingredients = new List<Recipeingred>();
             foreach (var ing in ingredients)
             {
+
+                retingredients.Add(new Recipeingred
+                {
+                    //Or amount + unit to get each component i.e 1.0 tbsp butter
+                    Amount = ing["original"]?.Value<string>(),
+                    Ingred = new Ingredient
+                    {
+                        Name = ing["name"]?.Value<string>(),
+                        Id = ing["id"].Value<int>()
+                    }
+                });
 
             }
             return retingredients;
