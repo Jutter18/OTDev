@@ -59,7 +59,7 @@ class IngredientSearch {
                         </div>
                     </div>
                 </div>
-            `;
+             `;
         });
     }
 }
@@ -101,4 +101,5 @@ inputSearchFridge.addEventListener("keydown", (e) => {
         SearchByIngredientName();
     }
 });
+
 //# sourceMappingURL=Index.js.map
