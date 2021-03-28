@@ -32,13 +32,13 @@ namespace MealFridge.Utils
             var details = JObject.Parse(jsonResponse);
             query.Aisle = (string)details["aisle"];
             query.Cost = (decimal)details["estimatedCost"]["value"];
-            if ((string)details["estimatedCost"]["unit"] == "US Cents") 
+            if ((string)details["estimatedCost"]["unit"] == "US Cents")
             {
                 query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
             }
             return query;
         }
-        
+
         public List<Ingredient> SearchIngredientsApi(string query, string searchType)
         {
             if (Source != null)
@@ -58,10 +58,12 @@ namespace MealFridge.Utils
             var ingredients = JObject.Parse(jsonResponse);
             foreach (var i in ingredients["results"])
             {
-                var temp = new Ingredient();
-                temp.Id = (int)i["id"];
-                temp.Name = (string)i["name"];
-                temp.Image = "https://spoonacular.com/cdn/ingredients_250x250/" + i["image"];
+                var temp = new Ingredient
+                {
+                    Id = (int)i["id"],
+                    Name = (string)i["name"],
+                    Image = "https://spoonacular.com/cdn/ingredients_250x250/" + i["image"]
+                };
                 output.Add(temp);
 
             }
