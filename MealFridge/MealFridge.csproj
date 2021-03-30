@@ -37,7 +37,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Pages\Account\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\js\Home\" />
     <Folder Include="wwwroot\js\Search\" />
   </ItemGroup>
@@ -53,6 +52,17 @@
     <None Remove="Views\Partials\**" />
     <TypeScriptCompile Remove="Views\Partials\**" />
     <Watch Remove="Views\Partials\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\Fridge\IngredientCards.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Watch Remove="Views\Fridge\CurrentInventory.cshtml" />
+    <Watch Remove="Views\Fridge\IngredientCards.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\Fridge\CurrentInventory.cshtml" />
+    <None Include="Views\Shared\IngredientCards.cshtml" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>

@@ -15,7 +15,7 @@ function inventorySearch(): void {
         return;
     }
     $.ajax({
-        url: "/Search/SearchByIngredients",
+        url: "/Search/SearchByIngredient",
         type: "POST",
         data: {
             QueryValue: search.val(),
@@ -23,7 +23,7 @@ function inventorySearch(): void {
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
-            $("main").empty();
+            $("#main").empty();
             $("#main").html(recipeCards);
         }
     })
