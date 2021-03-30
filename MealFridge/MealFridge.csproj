@@ -54,15 +54,12 @@
     <Watch Remove="Views\Partials\**" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="Views\Fridge\IngredientCards.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Watch Remove="Views\Fridge\CurrentInventory.cshtml" />
     <Watch Remove="Views\Fridge\IngredientCards.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Fridge\CurrentInventory.cshtml" />
-    <None Include="Views\Shared\IngredientCards.cshtml" />
+    <None Include="Views\Fridge\IngredientCards.cshtml" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>

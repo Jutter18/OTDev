@@ -18,7 +18,6 @@ namespace MealFridge.Controllers
 {
     public class FridgeController : Controller
     {
-
         private readonly IConfiguration _configuration;
         private readonly MealFridgeDbContext _context;
         private readonly UserManager<IdentityUser> _user;
@@ -53,6 +52,7 @@ namespace MealFridge.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItem(int id, int amount)
         {
+            //Find the current fridge and user 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var fridgeIngredient = _context.Fridges.Where(f => f.Id == id).FirstOrDefault() ?? new Fridge()
             {
@@ -60,17 +60,21 @@ namespace MealFridge.Controllers
                 IngredId = id
             };
             fridgeIngredient.Quantity = amount;
+            //If this is new, add it to the db
             if (!_context.Fridges.Any(item => item.AccountId == fridgeIngredient.AccountId && item.IngredId == fridgeIngredient.IngredId))
             {
                 await _context.Fridges.AddAsync(fridgeIngredient);
                 await _context.SaveChangesAsync();
             }
+            //else update the fridge with the new amount (Typically +- 1)
+            //This may remove the item if there is >1 in the current inventory
             else
                 UpdateItem(id, amount);
-
+            //Get the current inventory as it stands with the update/added/removed item
             var userInventory = _context.Fridges.Where(f => f.AccountId == userId)
                 .Include(i => i.Ingred)
                 .ToList();
+            //Return the current inventory
             return PartialView("CurrentInventory", userInventory);
         }
 
