@@ -27,7 +27,7 @@ namespace MealFridge.Tests.Home
         [Test]
         public void TestMethod()
         {
-            var homeController = new HomeController(CreateLogger(), )
+
         }
     }
 }
