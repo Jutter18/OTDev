@@ -18,4 +18,8 @@
     <Folder Include="Search\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MealFridge\MealFridge.csproj" />
+  </ItemGroup>
+
 </Project>
