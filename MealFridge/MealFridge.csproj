@@ -56,6 +56,7 @@
   <ItemGroup>
     <Watch Remove="Views\Fridge\CurrentInventory.cshtml" />
     <Watch Remove="Views\Fridge\IngredientCards.cshtml" />
+    <Watch Remove="wwwroot\js\Fridge\GetNumberFromString.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Fridge\CurrentInventory.cshtml" />

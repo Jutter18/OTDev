@@ -1,5 +1,4 @@
-﻿
-function addIngredient(id: string, amount: string): void {
+﻿function addIngredient(id: string, amount: string): void {
     let current = parseInt($("#current-card-" + id).text(), 10);
     $("#current-card-" + id).empty()
     $("#current-card-" + id).append((current + 1).toString());//Add one for updated value
@@ -25,7 +24,7 @@ function updateInventory(id: string, amount: string): void {
         method: "POST",
         data: {
             id: id,
-            amount: parseInt(amount)
+            amount: parseInt(amount, 10)
         },
         success: (data) => {
             $("#fridge-table-main").empty();
@@ -34,6 +33,7 @@ function updateInventory(id: string, amount: string): void {
         error: (err) => { console.log(err); }
     })
 }
+
 
 
 
@@ -64,3 +64,4 @@ inputSearchFridge.addEventListener("keydown", (e) => {
         SearchByIngredientName();
     }
 });
+
