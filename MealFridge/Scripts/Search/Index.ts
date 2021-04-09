@@ -7,8 +7,12 @@ window.onload = () => {
         searchByName()
     }
 };
+
+let pageNumber = 0;
+
 function inventorySearch(): void {
     let search = $("#inventorySearch");
+    let refine: HTMLInputElement = <HTMLInputElement>document.getElementById("panCheck");
     if (search.val() == "") {
         $("#main").empty();
         $("#main").append("You have no saved ingredients. Visit the Inventory page to add ingredients to your fridge.")
@@ -19,12 +23,21 @@ function inventorySearch(): void {
         type: "POST",
         data: {
             QueryValue: search.val(),
-            SearchType: "Ingredient"
+            SearchType: "Ingredient",
+            Refine: refine.checked,
+            PageNumber: pageNumber
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
-            $("#main").empty();
-            $("#main").html(recipeCards);
+            if (pageNumber < 1) {
+                $("#main").empty();
+                $("#main").html(recipeCards);
+                ++pageNumber;
+            }
+            else {
+                $("#main").append(recipeCards);
+                ++pageNumber;
+            }
         }
     })
 }
@@ -42,14 +55,43 @@ function searchByName(): void {
         type: "POST",
         data: {
             QueryValue: search.value,
-            SearchType: type.value
+            SearchType: type.value,
+            PageNumber: pageNumber
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
-            $("#main").empty();
-            $("#main").html(recipeCards);
+            if (pageNumber < 1) {
+                $("#main").empty();
+                $("#main").html(recipeCards);
+                ++pageNumber;
+            }
+            else {
+                $("#main").append(recipeCards);
+                ++pageNumber;
+            }
         }
     })
+}
+function addFavorite(id: string): void {
+    $.ajax({
+        url: "/Search/SavedRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Favorite"
+        }
+    });
+}
+
+function addShelf(id: string): void {
+    $.ajax({
+        url: "/Search/SavedRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Shelved"
+        }
+    });
 }
 
 const inputSearch: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");

@@ -20,6 +20,27 @@ function addIngredient(id: string, amount: string): void {
     })
 }
 
+function banIngred(id: string): void {
+    $.ajax({
+        url: "/Fridge/Restriction",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Banned"
+        }
+    });
+}
+
+function hideIngred(id: string): void {
+    $.ajax({
+        url: "/Fridge/Restriction",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Dislike"
+        }
+    });
+}
 function updateInventory(id: string, amount: string): void {
     $.ajax({
         url: "/Fridge/AddItem",
