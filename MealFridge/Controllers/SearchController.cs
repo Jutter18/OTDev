@@ -148,7 +148,6 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> SavedRecipe(int id, string other)
         {
-            Console.WriteLine("hit");
             var userId = _user.GetUserId(User);
             if (userId == null)
                 return StatusCode(400);

@@ -29,6 +29,7 @@ function inventorySearch(): void {
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
+            $("#morebutton").removeClass("d-none");
             if (search.val().toString() != searchparam) {
                 pageNumber = 0;
                 searchparam = search.val().toString();
@@ -64,6 +65,8 @@ function searchByName(): void {
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
+            $("#morebutton").removeClass("d-none");
+
             if (search.value.toString() != searchparam) {
                 pageNumber = 0;
                 searchparam = search.value.toString();

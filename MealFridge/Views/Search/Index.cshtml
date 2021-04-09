@@ -3,7 +3,7 @@
 @{ ViewBag.Title = "Search"; }
 <div class="container">
     <h3 class="text-center">Search by Recipe Name or Ingredient!</h3>
-    <div class="jumbotron p-0 h-25  shadow-lg">
+    <div class="jumbotron-fluid mb-2 p-0 h-25 sticky-top  shadow-lg">
         <div class="collapse" id="shoppingList" style="background-color:whitesmoke">
             <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
             <div id="innerShopping">
@@ -47,10 +47,10 @@
             </div>
         </div>
     </div>
-    <div id="alert"></div>
+    <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
     <div id="main" class="card-columns"></div>
     <div id="search-button" class="d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-primary" onclick="searchByName()">
+        <button type="button" class="btn btn-primary  d-none w-50 mt-4 mb-5" id="morebutton" onclick="searchByName()">
             Get more recipes!
         </button>
     </div>
