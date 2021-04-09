@@ -16,19 +16,20 @@ namespace MealFridge.Controllers
 {
     public class SearchController : Controller
     {
-
         private readonly IConfiguration _config;
         private readonly UserManager<IdentityUser> _user;
         private readonly MealFridgeDbContext _db;
         private readonly string _searchByNameEndpoint = "https://api.spoonacular.com/recipes/complexSearch";
         private readonly string _searchByIngredientEndpoint = "https://api.spoonacular.com/recipes/findByIngredients";
         private readonly string _searchByRecipeEndpoint = "https://api.spoonacular.com/recipes/{id}/information";
+
         public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user)
         {
             _db = context;
             _config = config;
             _user = user;
         }
+
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -45,6 +46,7 @@ namespace MealFridge.Controllers
             }
             return await Task.FromResult(View());
         }
+
         [HttpPost]
         public async Task<IActionResult> SearchByName(Query query)
         {
@@ -65,8 +67,9 @@ namespace MealFridge.Controllers
                     possibleRecipes.Add(i);
                 }
             }
-            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Take(10)));
+            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
+
         [HttpPost]
         public async Task<IActionResult> SearchByIngredient(Query query)
         {
@@ -100,7 +103,7 @@ namespace MealFridge.Controllers
                     possibleRecipes.Add(i);
                 }
             }
-            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Take(10)));
+            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
 
         public async Task<IActionResult> RecipeDetails(Query query)
@@ -121,9 +124,10 @@ namespace MealFridge.Controllers
             }
             return await Task.FromResult(PartialView("RecipeModal", recipe));
         }
+
         /// <summary>
-        /// Get new recipes from the api using the SearchSqnApi util. Will return a 
-        /// list of recipes that have been saved to the db. This is all done asynchronously 
+        /// Get new recipes from the api using the SearchSqnApi util. Will return a
+        /// list of recipes that have been saved to the db. This is all done asynchronously
         /// </summary>
         /// <param name="query"> A filled out Query with a value and name</param>
         /// <returns>A list of recipes that have been saved to the db</returns>
@@ -139,13 +143,15 @@ namespace MealFridge.Controllers
             }
 
             await _db.SaveChangesAsync();
-            return await Task.FromResult(possibleRecipes.OrderBy(r => r.Id).ToList());
+            return await Task.FromResult(possibleRecipes.OrderBy(r => r.Id).Distinct().ToList());
         }
-        public async Task SavedRecipe(int id, string other)
+
+        public async Task<IActionResult> SavedRecipe(int id, string other)
         {
+            Console.WriteLine("hit");
             var userId = _user.GetUserId(User);
             if (userId == null)
-                return;
+                return StatusCode(400);
             var tempRecipe = _db.Recipes.Where(r => r.Id == id).FirstOrDefault();
             var savedRecipe = new Savedrecipe
             {
@@ -161,11 +167,11 @@ namespace MealFridge.Controllers
             var temp = _db.Savedrecipes.ToList();
             foreach (var i in temp)
                 if (i.RecipeId == savedRecipe.Recipe.Id)
-                    return;
-
+                    return StatusCode(400);
 
             await _db.Savedrecipes.AddAsync(savedRecipe);
             await _db.SaveChangesAsync();
+            return StatusCode(200);
         }
     }
 }
