@@ -39,7 +39,7 @@ namespace MealFridge.Controllers
                     ingredients += _db.Ingredients.Where(a => a.Id == f.IngredId).FirstOrDefault().Name + ", ";
 
                 if (ingredients.Length > 2)
-                    ingredients = ingredients.Substring(0, ingredients.Length - 2);
+                    ingredients = ingredients[0..^2];
                 return await Task.FromResult(View("Index", ingredients));
             }
             return await Task.FromResult(View());
