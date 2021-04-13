@@ -57,13 +57,19 @@ namespace MealFridge.Utils
         {
             if (ingredient == null)
                 return null;
-
-            return new Ingredient
+            try
             {
-                Id = (int)ingredient["id"],
-                Name = (string)ingredient["name"],
-                Image = "https://spoonacular.com/cdn/ingredients_500x500/" + ingredient["image"]
-            };
+                return new Ingredient
+                {
+                    Id = (int)ingredient["id"],
+                    Name = (string)ingredient["name"],
+                    Image = "https://spoonacular.com/cdn/ingredients_500x500/" + ingredient["image"]
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public List<Recipe> SearchAPI()

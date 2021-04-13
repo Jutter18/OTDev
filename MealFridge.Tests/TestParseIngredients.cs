@@ -11,18 +11,21 @@ using MealFridge.Utils;
 namespace MealFridge.Tests
 {
     [TestFixture]
-    //INside of SearchSpnApi.cs, Line ~51
+    //INside of SearchSpnApi.cs, Line ~56
+    //This function is being used when search for ingredients is happening. This was implemented last sprint, with a few
+    //additions this sprint. Looks like this was originally implemented for this story #176855434, the function was refactored
+    //a bit to be testable.
     public class TestParseIngredients
     {
         [Test]
-        public void ParseIngredientEmptyList_ShouldReturn_EmptyList()
+        public void ParseIngredientEmptyList_Should_ReturnEmptyList()
         {
             var result = SearchSpnApi.ParseIngredient(null);
             Assert.That(result, Is.Null);
         }
 
         [Test]
-        public void ParseIngredientsSingleIngredient_ShouldReturnOneIngredientWithId()
+        public void ParseIngredientsSingleIngredient_Should_ReturnOneIngredientWithId()
         {
             var ingredientAsJson = new JObject
             {
@@ -37,12 +40,14 @@ namespace MealFridge.Tests
         }
 
         [Test]
-        public void ParseIngredientsSingleIngredient_ShouldReturnOneIngredientWithName()
+        public void ParseIngredientsSingleIngredient_Should_ReturnOneIngredientWithName()
         {
-            var ingredientAsJson = new JObject();
-            ingredientAsJson.Add("id", 1002);
-            ingredientAsJson.Add("name", "Test Ingredient");
-            ingredientAsJson.Add("image", "apple.jpg");
+            var ingredientAsJson = new JObject
+            {
+                { "id", 1002 },
+                { "name", "Test Ingredient" },
+                { "image", "apple.jpg" }
+            };
             var result = SearchSpnApi.ParseIngredient(ingredientAsJson);
 
             Assert.That(result.Name, Is.Not.Null);
@@ -50,16 +55,31 @@ namespace MealFridge.Tests
         }
 
         [Test]
-        public void ParseIngredientsSingleIngredient_ShouldReturnOneIngredientWithImage()
+        public void ParseIngredientsSingleIngredient_Should_ReturnOneIngredientWithImage()
         {
-            var ingredientAsJson = new JObject();
-            ingredientAsJson.Add("id", 1002);
-            ingredientAsJson.Add("name", "Test Ingredient");
-            ingredientAsJson.Add("image", "apple.jpg");
+            var ingredientAsJson = new JObject
+            {
+                { "id", 1002 },
+                { "name", "Test Ingredient" },
+                { "image", "apple.jpg" }
+            };
             var result = SearchSpnApi.ParseIngredient(ingredientAsJson);
 
             Assert.That(result.Image, Is.Not.Null);
             Assert.That(result.Image, Is.EqualTo("https://spoonacular.com/cdn/ingredients_500x500/" + "apple.jpg"));
+        }
+
+        [Test]
+        public void ParseIngredient_Should_ReturnNull()
+        {
+            var ingredientAsJson = new JObject
+            {
+                { "iddd", 1002 },
+                { "nameee", "Test Ingredient" },
+                { "imageee", "apple.jpg" }
+            };
+            var result = SearchSpnApi.ParseIngredient(ingredientAsJson);
+            Assert.That(result, Is.Null);
         }
     }
 }
