@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Fridge>
+
+<div id="shoppingList" style="background-color:whitesmoke">
+    <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
+    <div id="innerShopping">
+        <h3 id="shoppingListTitle" class="text-center">Shopping List</h3>
+        @if (Model.Where(x => x.Shopping == true).Count() < 1)
+        {
+            <div class="card shadow-lg">
+                <h6 class="card-title">Inventory is currently empty!</h6>
+            </div>
+        }
+        @if (Model.Where(x => x.Shopping == true).Count() > 0)
+        {
+
+            <table class="table" id="shopping-list">
+                <thead>
+                    <tr>
+                        <th class="w-75"> Name </th>
+                        <th class="w-25"> Amount </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model.Where(x => x.Shopping == true))
+                    {
+                        <tr id="@i.IngredId">
+                            <td class="w-75 "> @i.Ingred.Name </td>
+
+                            <td class="w-25">
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId" onclick="updateInventory('@i.Ingred.Id', -1)">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-light disabled">@i.Quantity</button>
+                                    <button type="button" title="Add one" class="btn btn-outline-success"
+                                            onclick="updateInventory('@i.Ingred.Id', 1)">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
