@@ -70,13 +70,20 @@ namespace MealFridge.Controllers
             var fridgeIngredient = await fridgeRepo.FindByIdAsync(userId, id) ?? new Fridge()
             {
                 AccountId = userId,
-                IngredId = id
+                IngredId = id,
             };
-            fridgeIngredient.Quantity = amount;
+            fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
+            fridgeIngredient.Quantity += amount;
+            if (fridgeIngredient.Quantity < 1 && fridgeIngredient.NeededAmount < 1)
+                RemoveItemAsync(fridgeIngredient);
             //Add it to the db or update it
-            await fridgeRepo.AddOrUpdateAsync(fridgeIngredient);
+            await fridgeRepo.AddAsync(fridgeIngredient);
             //Get the current inventory as it stands with the update/added/removed item
             var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
             //Return the current inventory
             return PartialView("CurrentInventory", userInventory);
         }
@@ -108,7 +115,7 @@ namespace MealFridge.Controllers
             {
                 foreach (var ingredient in possibleIngredients)
                     if (!await ingredientRepo.ExistsAsync(ingredient.Id))
-                        await ingredientRepo.AddOrUpdateAsync(ingredient);
+                        await ingredientRepo.AddIngredAsync(ingredient);
             }
             //Get user inventory to see if they have any of these ingredients
             else

@@ -48,16 +48,7 @@
     <Watch Include="**/*.cshtml" />
     <Watch Include="**/*.css" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Views\Shopping List\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Watch Remove="Scripts\ShoppingList\Index.ts" />
-    <Watch Remove="Views\Shopping List\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Views\Shopping List\Index.cshtml" />
-  </ItemGroup>
+ 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>

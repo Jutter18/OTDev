@@ -34,5 +34,15 @@ namespace MealFridge.Models.Repositories
             }
             return ingreds;
         }
+
+        public async Task AddAsync(Fridge fridgeIngredient)
+        {
+            if (fridgeIngredient == null)
+            {
+                throw new ArgumentNullException("Entity must not be null to add or update");
+            }
+            _context.Update(fridgeIngredient);
+            _context.SaveChanges();
+        }
     }
 }
