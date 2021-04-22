@@ -132,21 +132,6 @@ namespace MealFridge.Controllers
             return await Task.FromResult(PartialView("IngredientCards", possibleIngredients));
         }
 
-        private async void UpdateItem(int id, int amount)
-        {
-            //Find the ingredient to update, that way not another Fridge is being tracked
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var fridgeIngredient = await fridgeRepo.FindByIdAsync(userId, id);
-            //set the quantity
-            fridgeIngredient.Quantity = amount + (fridgeIngredient.Quantity ?? 0);
-            //IF the quantity is 0, remove it
-            if (fridgeIngredient.Quantity < 1)
-                RemoveItemAsync(fridgeIngredient);
-            //else update
-            else
-                await fridgeRepo.AddOrUpdateAsync(fridgeIngredient);
-        }
-
         /// <summary>
         /// Remove a fridge from the database. 
         /// </summary>
