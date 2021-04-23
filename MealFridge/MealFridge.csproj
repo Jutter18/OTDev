@@ -48,6 +48,11 @@
     <Watch Include="**/*.cshtml" />
     <Watch Include="**/*.css" />
   </ItemGroup>
+  <ItemGroup>
+    <Watch Remove="Scripts\MealPlan\Index.ts" />
+    <Watch Remove="Views\MealPlan\Index.cshtml" />
+    <Watch Remove="Views\MealPlan\MealPlan.cshtml" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>

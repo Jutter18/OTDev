@@ -15,8 +15,10 @@ namespace MealFridge.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
         //private readonly MealFridgeDbContext _db;
         private readonly IRecipeRepo _db;
+
         public HomeController(ILogger<HomeController> logger, IRecipeRepo context)
         {
             _logger = logger;
@@ -25,9 +27,10 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var randomRecipes = _db.getRandomSix();
+            var randomRecipes = _db.GetRandomSix();
             return await Task.FromResult(View("Index", randomRecipes));
         }
+
         [HttpPost]
         public async Task<IActionResult> RecipeDetails(Query query)
         {
