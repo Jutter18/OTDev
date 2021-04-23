@@ -98,13 +98,15 @@ body {
     outline:0;
     font-size:100%;
     margin-top:.5%;
+    border:none;
 }
     .cnhIngredButton:hover {
-        background-color: #ffcfcf;
+        filter: invert(25%);
     }
 #cnhIngredItem {
     outline-color:black;
-    outline-style:inset;
+    outline-style: solid;
+    outline-width: .1px;
     background-color: #f0f0f0;
     margin-left:-7%;
     margin-right:40%;

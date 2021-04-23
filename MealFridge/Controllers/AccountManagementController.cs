@@ -1,4 +1,5 @@
 ﻿using MealFridge.Models;
+using MealFridge.Models.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,13 +13,15 @@ namespace MealFridge.Controllers
     public class AccountManagementController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly MealFridgeDbContext _context;
+        private readonly IRestrictionRepo _restrictionContext;
+        private readonly IIngredientRepo _ingredientContext;
         private readonly UserManager<IdentityUser> _user;
 
-        public AccountManagementController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user)
+        public AccountManagementController(IConfiguration config, IRestrictionRepo restrictionContext, IIngredientRepo ingredientContext, UserManager<IdentityUser> user)
         {
             _configuration = config;
-            _context = context;
+            _restrictionContext = restrictionContext;
+            _ingredientContext = ingredientContext;
             _user = user;
         }
         public ActionResult Index()
@@ -29,11 +32,11 @@ namespace MealFridge.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var temp = _context.Restrictions.Where(i => i.IngredId == id && i.AccountId == _user.GetUserId(User)).FirstOrDefault();
+                var userId = _user.GetUserId(User);
+                var temp = _restrictionContext.Restriction(userId, id);
                 if (temp != null)
                 {
-                    _context.Remove(temp);
-                    _context.SaveChanges();
+                    _restrictionContext.RemoveRestriction(temp);
                 }
             }
             return await Task.FromResult(RedirectToAction("DietaryRestrictions"));
@@ -43,10 +46,10 @@ namespace MealFridge.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-                var userRestrictions = _context.Restrictions.Where(u => u.AccountId == userId && u.Banned == true).ToList();
+                var userRestrictions = _restrictionContext.GetUserRestrictedIngred(userId);
                 foreach (var restriction in userRestrictions)
                 {
-                    restriction.Ingred = _context.Ingredients.Where(i => i.Id == restriction.IngredId).FirstOrDefault();
+                    restriction.Ingred = _ingredientContext.Ingredient(restriction.IngredId);
                 }
                 return await Task.FromResult(View("DietaryRestrictions", userRestrictions));
             }
@@ -58,10 +61,10 @@ namespace MealFridge.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-                var userRestrictions = _context.Restrictions.Where(u => u.AccountId == userId && u.Dislike == true).ToList();
+                var userRestrictions = _restrictionContext.GetUserDislikedIngred(userId);
                 foreach (var restriction in userRestrictions)
                 {
-                    restriction.Ingred = _context.Ingredients.Where(i => i.Id == restriction.IngredId).FirstOrDefault();
+                    restriction.Ingred = _ingredientContext.Ingredient(restriction.IngredId);
                 }
                 return await Task.FromResult(View("FoodPreferences", userRestrictions));
             }
