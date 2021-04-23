@@ -22,7 +22,8 @@ namespace MealFridge.Models.Repositories
 
         public List<Fridge> FindByAccount(string userId)
         {
-            return _dbSet.Where(f => f.AccountId == userId).ToList();
+            var r = _dbSet.Where(f => f.AccountId == userId).ToList();
+            return r;
         }
 
         public List<Ingredient> FindByIngredient(int ingredId)
@@ -41,8 +42,11 @@ namespace MealFridge.Models.Repositories
             {
                 throw new ArgumentNullException("Entity must not be null to add or update");
             }
-            _context.Update(fridgeIngredient);
-            _context.SaveChanges();
+            if (_dbSet.Any(i => i.AccountId == fridgeIngredient.AccountId && i.IngredId == fridgeIngredient.IngredId))
+                _context.Update(fridgeIngredient);
+            else
+                await _context.AddAsync(fridgeIngredient);
+            await _context.SaveChangesAsync();
         }
     }
 }

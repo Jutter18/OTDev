@@ -19,28 +19,20 @@
                 <table class="table" id="shopping-list">
                     <thead>
                         <tr>
-                            <th class="w-75"> Name </th>
-                            <th class="w-25"> Amount </th>
+                            <th class="w-25"> Name </th>
+                            <th class="w-25"> Amount you have </th>
+                            <th class="w-25"> Amount you need </th>
+                            <th class="w-25"> Gotten </th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var i in Model.Where(x => x.Shopping == true))
                         {
                             <tr id="@i.IngredId">
-                                <td class="w-75 "> @i.Ingred.Name </td>
-
-                                <td class="w-25">
-                                    <div class="btn-group btn-group-sm">
-                                        <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId" onclick="updateInventory('@i.Ingred.Id', -1)">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-light disabled">@i.Quantity</button>
-                                        <button type="button" title="Add one" class="btn btn-outline-success"
-                                                onclick="updateInventory('@i.Ingred.Id', 1)">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                <td class="w-25"> @i.Ingred.Name </td>
+                                <td class="w-25"> @i.Quantity </td>
+                                <td class="w-25"> @i.NeededAmount</td>
+                                <td class="w-25"> <input type="checkbox" /></td>
                             </tr>
                         }
                     </tbody>

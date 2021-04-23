@@ -41,7 +41,7 @@ function hideIngred(id: string): void {
 }
 function updateInventory(id: string, amount: string): void {
     $.ajax({
-        url: "/Fridge/UpdateItem",
+        url: "/Fridge/AddItem",
         method: "POST",
         data: {
             id: id,
