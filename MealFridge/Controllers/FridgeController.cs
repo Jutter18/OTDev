@@ -71,6 +71,9 @@ namespace MealFridge.Controllers
             {
                 AccountId = userId,
                 IngredId = id,
+                NeededAmount = 0,
+                Quantity = 0,
+                Shopping = false
             };
             fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
             fridgeIngredient.Quantity += amount;
