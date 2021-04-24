@@ -1,11 +1,5 @@
-﻿using MealFridge.Models;
-using MealFridge.Utils;
+﻿using MealFridge.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MealFridge.Models.Interfaces;
