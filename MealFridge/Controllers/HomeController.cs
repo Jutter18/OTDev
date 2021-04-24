@@ -10,14 +10,16 @@ namespace MealFridge.Controllers
     public class HomeController : Controller
     {
         private readonly IConfiguration _config;
+        private readonly ISpnApiService _spnApi;
 
         //private readonly MealFridgeDbContext _db;
         private readonly IRecipeRepo _db;
 
-        public HomeController(IConfiguration config, IRecipeRepo context)
+        public HomeController(IConfiguration config, IRecipeRepo context, ISpnApiService service)
         {
             _config = config;
             _db = context;
+            _spnApi = service;
         }
 
         public async Task<IActionResult> Index()
@@ -47,14 +49,11 @@ namespace MealFridge.Controllers
 
         private async Task SearchApiAsync(Query query)
         {
-            var apiQuerier = new SpnApiService(query);
-            var possibleRecipes = apiQuerier.SearchApi();
+            var possibleRecipes = _spnApi.SearchApi(query);
             if (possibleRecipes != null)
-            {
                 foreach (var recipe in possibleRecipes)
                     if (!_db.GetAll().Any(t => t.Id == recipe.Id))
                         await _db.AddOrUpdateAsync(recipe);
-            }
         }
 
         [HttpPost]

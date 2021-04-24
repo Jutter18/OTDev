@@ -1,29 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Diagnostics;
-using MealFridge.Models;
 using MealFridge.Models.Interfaces;
+using MealFridge.Utils;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 
-namespace MealFridge.Utils
+namespace MealFridge.Models.Repositories
 {
     public class SpnApiService : ISpnApiService
     {
         private Query _query;
 
-        public SpnApiService(Query query)
-        {
-            _query = query;
-        }
-
         public Ingredient IngredientDetails(Ingredient query, string searchType) //Not currently called
         {
-            //Find a new way to do this using standardized function
+            //Find a new way to do this using standardized SendRequest() function
             //var jsonResponse = SendRequest(Source, Secret, query.Id.ToString(), searchType);
             var jsonResponse = "";
             var details = JObject.Parse(jsonResponse);
@@ -31,15 +22,16 @@ namespace MealFridge.Utils
             query.Cost = (decimal)details["estimatedCost"]["value"];
             if ((string)details["estimatedCost"]["unit"] == "US Cents")
             {
-                query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
+                query.Cost *= 10; //Rip this part out
             }
             var nutrients = details["nutrition"]["nutrients"].ToList();
             JsonParser.ParseNutrition(nutrients, query);
             return query;
         }
 
-        public List<Ingredient> SearchIngredients()
+        public List<Ingredient> SearchIngredients(Query query)
         {
+            _query = query;
             var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
@@ -73,8 +65,9 @@ namespace MealFridge.Utils
             }
         }
 
-        public List<Recipe> SearchApi()
+        public List<Recipe> SearchApi(Query query)
         {
+            _query = query;
             var jsonResponse = SendRequest();
             var output = new List<Recipe>();
             switch (_query.SearchType)
