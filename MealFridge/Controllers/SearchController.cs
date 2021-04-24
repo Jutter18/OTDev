@@ -1,4 +1,3 @@
-
 using System.Data.Common;
 using MealFridge.Models;
 using MealFridge.Utils;
@@ -12,7 +11,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace MealFridge.Controllers
 {
@@ -135,7 +133,7 @@ namespace MealFridge.Controllers
                 {
                     if (!_db.Recipeingreds.Any(r => (r.RecipeId == ingred.RecipeId) && (r.IngredId == ingred.IngredId)))
                     {
-                        if(_db.Ingredients.Any(i => i.Id == ingred.IngredId))
+                        if (_db.Ingredients.Any(i => i.Id == ingred.IngredId))
 
                         {
                             ingred.Ingred = _db.Ingredients.FirstOrDefault(i => i.Id == ingred.IngredId);
@@ -161,8 +159,8 @@ namespace MealFridge.Controllers
         /// <returns>A list of recipes that have been saved to the db</returns>
         private async Task<List<Recipe>> SearchApiAsync(Query query)
         {
-            var apiQuerier = new SearchSpnApi(query);
-            var possibleRecipes = apiQuerier.SearchAPI();
+            var apiQuerier = new SpnApiService(query);
+            var possibleRecipes = apiQuerier.SearchApi();
             if (possibleRecipes != null)
             {
                 foreach (var recipe in possibleRecipes)

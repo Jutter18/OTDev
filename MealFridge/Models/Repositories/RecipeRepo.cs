@@ -14,29 +14,6 @@ namespace MealFridge.Models.Repositories
         {
         }
 
-        public async Task<Meals> GetMealPlanWeekAsync()
-        {
-            var meals = new Meals
-            {
-                Breakfast = Meal.CreateMealsFromRecipes(GetAll()
-                .Where(r => r.Breakfast == true)
-                .OrderBy(r => Guid.NewGuid())
-                .Take(7)
-                .ToList()),
-                Lunch = Meal.CreateMealsFromRecipes(GetAll()
-                .Where(r => r.Lunch == true)
-                .OrderBy(r => Guid.NewGuid())
-                .Take(7)
-                .ToList()),
-                Dinner = Meal.CreateMealsFromRecipes(GetAll()
-                .Where(r => r.Dinner == true)
-                .OrderBy(r => Guid.NewGuid())
-                .Take(7)
-                .ToList())
-            };
-            return await Task.FromResult(meals);
-        }
-
         public virtual List<Recipe> GetRandomSix()
         {
             IQueryable<Recipe> recipes = GetAll();

@@ -9,7 +9,5 @@ namespace MealFridge.Models.Interfaces
     public interface IRecipeRepo : IRepository<Recipe>
     {
         public List<Recipe> GetRandomSix();
-
-        public Task<Meals> GetMealPlanWeekAsync();
     }
 }

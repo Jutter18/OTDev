@@ -98,7 +98,7 @@ namespace MealFridge.Controllers
                 query.QueryName = "query";
                 query.Url = _ingredientSearchEndpoint;
                 query.Credentials = _configuration["SApiKey"];
-                var apiCall = new SearchSpnApi(query);
+                var apiCall = new SpnApiService(query);
                 possibleIngredients = apiCall.SearchIngredients();
             }
             //Save the ingredients into the db

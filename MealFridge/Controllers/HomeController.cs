@@ -9,26 +9,58 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MealFridge.Models.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace MealFridge.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _config;
 
         //private readonly MealFridgeDbContext _db;
         private readonly IRecipeRepo _db;
 
-        public HomeController(ILogger<HomeController> logger, IRecipeRepo context)
+        public HomeController(IConfiguration config, IRecipeRepo context)
         {
-            _logger = logger;
+            _config = config;
             _db = context;
         }
 
         public async Task<IActionResult> Index()
         {
+            if (_db.GetAll().Count() < 1)
+                await SeedDatabase();
             var randomRecipes = _db.GetRandomSix();
             return await Task.FromResult(View("Index", randomRecipes));
+        }
+
+        private async Task SeedDatabase()
+        {
+            var query = new Query
+            {
+                SearchType = "Random",
+                Url = ApiConstants.RandomRecipesUrl,
+                QueryName = "tags",
+                QueryValue = "breakfast",
+                Credentials = _config["SApiKey"]
+            };
+            await SearchApiAsync(query);
+            query.QueryValue = "lunch";
+            await SearchApiAsync(query);
+            query.QueryValue = "dinner";
+            await SearchApiAsync(query);
+        }
+
+        private async Task SearchApiAsync(Query query)
+        {
+            var apiQuerier = new SpnApiService(query);
+            var possibleRecipes = apiQuerier.SearchApi();
+            if (possibleRecipes != null)
+            {
+                foreach (var recipe in possibleRecipes)
+                    if (!_db.GetAll().Any(t => t.Id == recipe.Id))
+                        await _db.AddOrUpdateAsync(recipe);
+            }
         }
 
         [HttpPost]
