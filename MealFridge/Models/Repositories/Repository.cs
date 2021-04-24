@@ -25,7 +25,7 @@ namespace MealFridge.Models.Repositories
                 throw new ArgumentNullException("Entity must not be null to add or update");
             }
             _context.Update(entity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); //Breaking here
             return entity;
         }
 
