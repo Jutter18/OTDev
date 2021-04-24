@@ -90,6 +90,7 @@ namespace MealFridge.Controllers
                     {
                         AccountId = userId,
                         IngredId = r.IngredId,
+                        Quantity = 0,
                         NeededAmount = r.Amount,
                         Shopping = true
                     });

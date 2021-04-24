@@ -77,8 +77,12 @@ namespace MealFridge.Controllers
             };
             fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
             fridgeIngredient.Quantity += amount;
-            if (fridgeIngredient.Quantity < 1 && fridgeIngredient.NeededAmount < 1)
+            if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
                 RemoveItemAsync(fridgeIngredient);
+            if (fridgeIngredient.Quantity < fridgeIngredient.NeededAmount)
+                fridgeIngredient.Shopping = true;
+            else
+                fridgeIngredient.Shopping = false;
             //Add it to the db or update it
             await fridgeRepo.AddAsync(fridgeIngredient);
             //Get the current inventory as it stands with the update/added/removed item

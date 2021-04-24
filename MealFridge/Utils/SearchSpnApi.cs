@@ -62,7 +62,7 @@ namespace MealFridge.Utils
                 {
                     Id = (int)ingredient["id"],
                     Name = (string)ingredient["name"],
-                    Image = "https://spoonacular.com/cdn/ingredients_500x500/" + ingredient["image"]
+                    Image = (string)ingredient["image"]
                 };
             }
             catch
