@@ -19,9 +19,6 @@ namespace MealFridge.Controllers
         private readonly IConfiguration _config;
         private readonly UserManager<IdentityUser> _user;
         private readonly MealFridgeDbContext _db;
-        private readonly string _searchByNameEndpoint = "https://api.spoonacular.com/recipes/complexSearch";
-        private readonly string _searchByIngredientEndpoint = "https://api.spoonacular.com/recipes/findByIngredients";
-        private readonly string _searchByRecipeEndpoint = "https://api.spoonacular.com/recipes/{id}/information";
 
         public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user)
         {
@@ -62,7 +59,7 @@ namespace MealFridge.Controllers
             {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
-                query.Url = _searchByNameEndpoint;
+                query.Url = ApiConstants.SearchByIngredientEndpoint;
                 foreach (var i in await SearchApiAsync(query))
                 {
                     i.Savedrecipes = _db.Savedrecipes.ToList();
@@ -98,7 +95,7 @@ namespace MealFridge.Controllers
             if (possibleRecipes.Count < 10)
             {
                 query.QueryName = "ingredients";
-                query.Url = _searchByIngredientEndpoint;
+                query.Url = ApiConstants.SearchByIngredientEndpoint;
                 query.Credentials = _config["SApiKey"];
                 query.SearchType = "Ingredient";
                 foreach (var i in await SearchApiAsync(query))
@@ -121,7 +118,7 @@ namespace MealFridge.Controllers
             {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "id";
-                query.Url = _searchByRecipeEndpoint.Replace("{id}", id.ToString());
+                query.Url = ApiConstants.SearchByRecipeEndpoint.Replace("{id}", id.ToString());
                 query.SearchType = "Details";
                 var recipes = await SearchApiAsync(query);
                 recipe.UpdateRecipe(recipes.FirstOrDefault());
@@ -134,7 +131,6 @@ namespace MealFridge.Controllers
                     if (!_db.Recipeingreds.Any(r => (r.RecipeId == ingred.RecipeId) && (r.IngredId == ingred.IngredId)))
                     {
                         if (_db.Ingredients.Any(i => i.Id == ingred.IngredId))
-
                         {
                             ingred.Ingred = _db.Ingredients.FirstOrDefault(i => i.Id == ingred.IngredId);
                         }

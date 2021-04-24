@@ -15,45 +15,46 @@ namespace MealFridge.Utils
         {
             foreach (var n in nutrition)
             {
-                if (n["name"].ToString() == "Calories")
+                switch (n["name"].ToString())
                 {
-                    ingredient.Calories = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Saturated Fat")
-                {
-                    ingredient.SatFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Fat")
-                {
-                    ingredient.TotalFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Net Carbohydrates")
-                {
-                    ingredient.NetCarbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Carbohydrates")
-                {
-                    ingredient.Carbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Cholesterol")
-                {
-                    ingredient.Cholesterol = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sodium")
-                {
-                    ingredient.Sodium = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Protein")
-                {
-                    ingredient.Protein = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sugar")
-                {
-                    ingredient.Sugar = (float)n["amount"];
-                }
-                else
-                {
-                    Console.WriteLine("Skipped: " + (string)n["name"]);
+                    case "Calories":
+                        ingredient.Calories = (float)n["amount"];
+                        break;
+
+                    case "Saturated Fat":
+                        ingredient.SatFat = (float)n["amount"];
+                        break;
+
+                    case "Fat":
+                        ingredient.TotalFat = (float)n["amount"];
+                        break;
+
+                    case "Net Carbohydrates":
+                        ingredient.NetCarbs = (float)n["amount"];
+                        break;
+
+                    case "Carbohydrates":
+                        ingredient.Carbs = (float)n["amount"];
+                        break;
+
+                    case "Cholesterol":
+                        ingredient.Cholesterol = (float)n["amount"];
+                        break;
+
+                    case "Sodium":
+                        ingredient.Sodium = (float)n["amount"];
+                        break;
+
+                    case "Protein":
+                        ingredient.Protein = (float)n["amount"];
+                        break;
+
+                    case "Sugar":
+                        ingredient.Sugar = (float)n["amount"];
+                        break;
+
+                    default:
+                        break;
                 }
             }
         }

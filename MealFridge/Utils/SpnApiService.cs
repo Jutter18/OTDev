@@ -118,29 +118,49 @@ namespace MealFridge.Utils
                     }
                     break;
 
-                default:
-                    if (_query.SearchType == null)
-                        return null;
+                case "Details":
                     var recipeDetails = JObject.Parse(jsonResponse);
-                    var list = JsonParser.IngredientList(recipeDetails["extendedIngredients"].Value<JArray>());
-                    var detailedRecipe = new Recipe
-                    {
-                        Id = recipeDetails["id"].Value<int>(),
-                        Title = recipeDetails["title"].Value<string>(),
-                        Cost = recipeDetails["pricePerServing"].Value<decimal>(),
-                        Minutes = recipeDetails["readyInMinutes"].Value<int>(),
-                        Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>(),
-                        Summery = recipeDetails["sourceUrl"].Value<string>(),
-                        Servings = recipeDetails["servings"].Value<int>(),
-                        Recipeingreds = JsonParser.GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list)
-                    };
-                    JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JToken>>(), detailedRecipe);
-                    var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
-                    JsonParser.ParseNutrition(nutrients, detailedRecipe);
+                    Recipe detailedRecipe = GetDetailRecipe(recipeDetails);
                     output.Add(detailedRecipe);
                     break;
+
+                case "Random":
+                    recipes = JObject.Parse(jsonResponse);
+                    foreach (JObject recipe in recipes["recipes"])
+                    {
+                        output.Add(GetDetailRecipe(recipe));
+                    }
+                    break;
+
+                default:
+                    return null;
             }
             return output;
+        }
+
+        private static Recipe GetDetailRecipe(JObject recipeDetails)
+        {
+            var list = JsonParser.IngredientList(recipeDetails["extendedIngredients"].Value<JArray>());
+            var detailedRecipe = new Recipe();
+            try
+            {
+                detailedRecipe.Id = recipeDetails["id"].Value<int>();
+                detailedRecipe.Title = recipeDetails["title"].Value<string>();
+                detailedRecipe.Cost = recipeDetails["pricePerServing"].Value<decimal>();
+                detailedRecipe.Minutes = recipeDetails["readyInMinutes"].Value<int>();
+                detailedRecipe.Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>();
+                detailedRecipe.Summery = recipeDetails["sourceUrl"].Value<string>();
+                detailedRecipe.Servings = recipeDetails["servings"].Value<int>();
+                JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JToken>>(), detailedRecipe);
+                var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
+                JsonParser.ParseNutrition(nutrients, detailedRecipe);
+                detailedRecipe.Recipeingreds = JsonParser.GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list);
+            }
+            catch
+            {
+                return detailedRecipe;
+            }
+            return detailedRecipe;
         }
 
         private string SendRequest()

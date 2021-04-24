@@ -19,7 +19,10 @@ namespace MealFridge.Utils
             return "https://spoonacular.com/recipeImages/" + id + "-556x370." + imageType;
         }
 
+        public static string SearchByNameEndpoint { get; } = "https://api.spoonacular.com/recipes/complexSearch";
+        public static string SearchByIngredientEndpoint { get; } = "https://api.spoonacular.com/recipes/findByIngredients";
+        public static string SearchByRecipeEndpoint { get; } = "https://api.spoonacular.com/recipes/{id}/information";
         public static string RandomRecipesUrl { get; } = BaseUrl + "recipes/random";
-        public static string RandomRecipeAmount { get; } = "&number=1";
+        public static string RandomRecipeAmount { get; } = "&number=100";
     }
 }
