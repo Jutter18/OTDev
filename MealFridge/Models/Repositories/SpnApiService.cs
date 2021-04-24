@@ -56,7 +56,7 @@ namespace MealFridge.Models.Repositories
                 {
                     Id = (int)ingredient["id"],
                     Name = (string)ingredient["name"],
-                    Image = (string)ingredient["image"]
+                    Image = ApiConstants.IngredientImageUrl + (string)ingredient["image"]
                 };
             }
             catch

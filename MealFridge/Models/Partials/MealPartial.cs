@@ -10,7 +10,10 @@ namespace MealFridge.Models
             var meals = new List<Meal>();
             foreach (var recipe in recipes)
             {
-                var type = recipe.Breakfast.Value ? "Breakfast" : recipe.Lunch.Value ? "Lunch" : "Dinner";
+                var type = recipe.Breakfast.Value ? "Breakfast"
+                    : recipe.Lunch.Value ? "Lunch"
+                    : recipe.Dinner.Value ? "Dinner"
+                    : recipe.Snack.Value ? "Snack" : "Dessert";
                 meals.Add(new Meal
                 {
                     Recipe = recipe,
