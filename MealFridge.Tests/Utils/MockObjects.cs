@@ -93,5 +93,27 @@ namespace MealFridge.Tests.Utils
                 .Build();
             return config;
         }
+
+        public static Savedrecipe[] CreateSavedRecipes(int count)
+        {
+            var svRecipes = new Savedrecipe[count];
+            for (var i = 0; i < count; ++i)
+            {
+                svRecipes[i] = new Savedrecipe
+                {
+                    AccountId = "1",
+                    Recipe = new Recipe { Id = i },
+                    Favorited = true
+                };
+            }
+            return svRecipes;
+        }
+
+        public static Mock<ISavedrecipeRepo> CreateSavedRecipes()
+        {
+            var saved = new Mock<ISavedrecipeRepo>();
+            saved.Setup(s => s.GetFavoritedRecipe(It.IsAny<string>())).Returns(CreateSavedRecipes(10).ToList());
+            return saved;
+        }
     }
 }

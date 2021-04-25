@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Watch Remove="Scripts\Preferences\Index.ts" />
+    <Watch Remove="Views\MealPlan\SavedRecipesModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Preferences\Index.ts" />
