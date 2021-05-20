@@ -85,7 +85,7 @@ function searchByName(): void {
 }
 function undoFavorite(id: string): void {
     $.ajax({
-        url: "/AccountManagement/RemoveSavedRecipe",
+        url: "/AccountManagement/DeleteRecipe",
         method: "POST",
         data: {
             id: parseInt(id)
@@ -129,9 +129,8 @@ function addFavorite(id: string): void {
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
+                  <strong>Added to Favorites</strong> Click here to undo
                   <button id="undoFavButton" class="btn btn-danger" onclick=undoFavorite(${id}) title="Undo Favorite"><i class="fas fa-undo"></i></button>
-                  <strong>Added</strong> Recipe has been added to your favorites     
-                  
                 </div>
             `);
         },
