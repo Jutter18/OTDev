@@ -134,7 +134,6 @@ function addFavorite(id: string): void {
                   
                 </div>
             `);
-            
         },
         error: _ => {
             $("#alert").empty();
